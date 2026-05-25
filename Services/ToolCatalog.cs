@@ -53,6 +53,27 @@ public static class ToolCatalog
             .ToList();
     }
 
+    public static IReadOnlyList<ToolItem> GetAllToolsLazy(int skip, int take)
+    {
+        if (!Directory.Exists(ToolsRoot))
+            return [];
+
+        return GetCategories()
+            .SelectMany(GetTools)
+            .Skip(skip)
+            .Take(take)
+            .ToList();
+    }
+
+    public static int GetAllToolsCount()
+    {
+        if (!Directory.Exists(ToolsRoot))
+            return 0;
+
+        return GetCategories()
+            .Sum(c => GetTools(c).Count);
+    }
+
     public static IReadOnlyList<ToolItem> Search(string query)
     {
         if (!Directory.Exists(ToolsRoot))
@@ -71,7 +92,6 @@ public static class ToolCatalog
             .Where(item =>
                 item.Name.Contains(normalizedQuery, StringComparison.CurrentCultureIgnoreCase) ||
                 item.RelativePath.Contains(normalizedQuery, StringComparison.CurrentCultureIgnoreCase))
-            .Take(80)
             .ToList();
     }
 

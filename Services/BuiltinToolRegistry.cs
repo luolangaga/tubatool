@@ -24,6 +24,11 @@ public static class BuiltinToolRegistry
         Register(new KeyboardTestTool());
         Register(new JunkCleanerTool());
         Register(new BsodAnalysisTool());
+        Register(new WingetInstallerTool());
+        Register(new BatteryReportTool());
+        Register(new SpeedTestTool());
+        Register(new WifiPasswordTool());
+        Register(new DiskSpaceAnalyzerTool());
     }
 
     public static IReadOnlyList<string> GetCategories()

@@ -1,8 +1,5 @@
 {
   "profiles": {
-    "TubaWinUi3 (Package)": {
-      "commandName": "MsixPackage"
-    },
     "TubaWinUi3 (Unpackaged)": {
       "commandName": "Project"
     }

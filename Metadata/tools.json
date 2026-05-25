@@ -5,7 +5,55 @@
       "match": "CPU-Z",
       "description": "处理器、主板、内存和显卡基础信息查看工具。",
       "publisher": "CPUID",
-      "tags": [ "CPU", "硬件检测" ]
+      "tags": [ "CPU", "主板", "硬件检测" ]
+    },
+    {
+      "match": "CoreTemp",
+      "description": "CPU 温度实时监控工具，支持每个核心独立温度显示和系统托盘通知。",
+      "publisher": "ALCPU",
+      "tags": [ "CPU", "温度监控" ]
+    },
+    {
+      "match": "C2CLatency",
+      "description": "CPU 缓存到缓存延迟测试工具，测量 L1/L2/L3 缓存间通信延迟。",
+      "publisher": "",
+      "tags": [ "CPU", "延迟测试" ]
+    },
+    {
+      "match": "LinX",
+      "description": "基于 Intel LINPACK 的 CPU 稳定性测试工具，用于极限烤机和超频验证。",
+      "publisher": "",
+      "tags": [ "CPU", "烤机", "稳定性测试" ]
+    },
+    {
+      "match": "Prime95",
+      "description": "GIMPS 项目分布式计算客户端，广泛用于 CPU 稳定性测试和烤机。",
+      "publisher": "GIMPS",
+      "tags": [ "CPU", "烤机", "稳定性测试" ]
+    },
+    {
+      "match": "SuperPI",
+      "description": "CPU 圆周率计算性能测试工具，计算 π 的指定位数衡量 CPU 单核性能。",
+      "publisher": "",
+      "tags": [ "CPU", "性能测试" ]
+    },
+    {
+      "match": "ThrottleStop",
+      "description": "CPU 降频监控和功耗控制工具，可解除笔记本 CPU 功耗限制。",
+      "publisher": "uWebb Software",
+      "tags": [ "CPU", "降频", "功耗控制" ]
+    },
+    {
+      "match": "wPrime",
+      "description": "多线程 CPU 性能测试工具，通过计算质数衡量多核计算能力。",
+      "publisher": "wPrime",
+      "tags": [ "CPU", "性能测试" ]
+    },
+    {
+      "match": "xiangqi",
+      "description": "Fritz 国际象棋基准测试，通过象棋算法评估 CPU 多核运算性能。",
+      "publisher": "ChessBase",
+      "tags": [ "CPU", "性能测试" ]
     },
     {
       "match": "GPU-Z",
@@ -14,10 +62,274 @@
       "tags": [ "显卡", "硬件检测" ]
     },
     {
+      "match": "DDU",
+      "description": "显卡驱动彻底卸载工具，安全清除 AMD/NVIDIA/Intel 显卡驱动残留。",
+      "publisher": "Wagnardsoft",
+      "tags": [ "显卡", "驱动卸载" ]
+    },
+    {
+      "match": "DXVAChecker",
+      "description": "DirectX 视频加速（DXVA）硬件解码能力检测工具。",
+      "publisher": "",
+      "tags": [ "显卡", "解码检测" ]
+    },
+    {
+      "match": "GpuTest",
+      "description": "跨平台 GPU 基准测试工具，支持 OpenGL 压力测试和性能评分。",
+      "publisher": "Geeks3D",
+      "tags": [ "显卡", "性能测试" ]
+    },
+    {
+      "match": "nvidiaInspector",
+      "description": "NVIDIA 显卡信息查看和超频工具，可调节电压、频率和风扇曲线。",
+      "publisher": "Orbmu2k",
+      "tags": [ "显卡", "NVIDIA", "超频" ]
+    },
+    {
+      "match": "nvidiaProfileInspector",
+      "description": "NVIDIA 显卡驱动配置文件编辑器，可修改隐藏驱动设置和 SLI 配置。",
+      "publisher": "",
+      "tags": [ "显卡", "NVIDIA", "驱动配置" ]
+    },
+    {
+      "match": "AMD显卡驱动",
+      "description": "AMD 显卡驱动程序官方下载入口。",
+      "publisher": "AMD",
+      "tags": [ "显卡", "驱动下载" ]
+    },
+    {
+      "match": "Nvidia显卡驱动",
+      "description": "NVIDIA 显卡驱动程序官方下载入口。",
+      "publisher": "NVIDIA",
+      "tags": [ "显卡", "驱动下载" ]
+    },
+    {
+      "match": "FurMark",
+      "description": "GPU 压力测试和烤机工具（OpenGL），俗称显卡杀手，用于检测显卡稳定性。",
+      "publisher": "Geeks3D",
+      "tags": [ "烤机", "显卡", "稳定性测试" ]
+    },
+    {
       "match": "CrystalDiskInfo",
       "description": "硬盘 SMART、健康状态、温度和通电时间查看工具。",
       "publisher": "Crystal Dew World",
-      "tags": [ "硬盘", "SMART" ]
+      "tags": [ "硬盘", "SMART", "健康检测" ]
+    },
+    {
+      "match": "CrystalDiskMark",
+      "description": "硬盘读写速度基准测试工具，测量顺序和随机读写性能。",
+      "publisher": "Crystal Dew World",
+      "tags": [ "硬盘", "速度测试" ]
+    },
+    {
+      "match": "AS SSD",
+      "description": "SSD 专用基准测试工具，测量顺序/随机读写速度和访问时间。",
+      "publisher": "Alex Schepeljanski",
+      "tags": [ "硬盘", "SSD", "速度测试" ]
+    },
+    {
+      "match": "ATTO",
+      "description": "ATTO 磁盘基准测试工具，测量不同块大小下的磁盘读写速度。",
+      "publisher": "ATTO Technology",
+      "tags": [ "硬盘", "速度测试" ]
+    },
+    {
+      "match": "DiskGenius",
+      "description": "磁盘分区、数据恢复、坏道检测和分区表维护工具。",
+      "publisher": "Eassos",
+      "tags": [ "硬盘", "分区", "数据恢复" ]
+    },
+    {
+      "match": "Defraggler",
+      "description": "磁盘碎片整理工具，支持按文件/文件夹级别整理碎片。",
+      "publisher": "Piriform",
+      "tags": [ "硬盘", "碎片整理" ]
+    },
+    {
+      "match": "FinalData",
+      "description": "数据恢复工具，恢复误删除、格式化或病毒破坏的文件。",
+      "publisher": "FINALDATA Inc.",
+      "tags": [ "硬盘", "数据恢复" ]
+    },
+    {
+      "match": "H2testw",
+      "description": "U盘/存储卡容量真实性检测工具，鉴别扩容盘和假容量存储设备。",
+      "publisher": "Harald Bögeholz",
+      "tags": [ "硬盘", "U盘", "真伪检测" ]
+    },
+    {
+      "match": "HDTune",
+      "description": "硬盘性能测试和健康检测工具，支持传输速率、存取时间和健康状态检测。",
+      "publisher": "EFD Software",
+      "tags": [ "硬盘", "速度测试", "健康检测" ]
+    },
+    {
+      "match": "LLFTOOL",
+      "description": "低级格式化工具，对磁盘进行彻底的底层擦除和格式化。",
+      "publisher": "",
+      "tags": [ "硬盘", "格式化" ]
+    },
+    {
+      "match": "MyDiskTest",
+      "description": "U盘/存储卡扩容检测和速度测试工具，可识别虚假容量存储设备。",
+      "publisher": "",
+      "tags": [ "硬盘", "U盘", "真伪检测" ]
+    },
+    {
+      "match": "SpaceSniffer",
+      "description": "磁盘空间可视化分析工具，以树状图直观展示文件夹占用空间。",
+      "publisher": "Uderzo Software",
+      "tags": [ "硬盘", "空间分析" ]
+    },
+    {
+      "match": "SSD utils",
+      "description": "SSD 固态硬盘在线工具入口，提供 SSD 相关在线检测和优化。",
+      "publisher": "",
+      "tags": [ "硬盘", "SSD" ]
+    },
+    {
+      "match": "SSDZ",
+      "description": "SSD 固态硬盘信息查看和健康检测工具。",
+      "publisher": "",
+      "tags": [ "硬盘", "SSD", "健康检测" ]
+    },
+    {
+      "match": "TxBENCH",
+      "description": "SSD 存储设备基准测试工具，支持多种读写模式性能评估。",
+      "publisher": "Texim Corporation",
+      "tags": [ "硬盘", "SSD", "速度测试" ]
+    },
+    {
+      "match": "URWTEST",
+      "description": "U盘读写速度测试工具，检测 U盘实际读写性能。",
+      "publisher": "",
+      "tags": [ "硬盘", "U盘", "速度测试" ]
+    },
+    {
+      "match": "WinDirStat",
+      "description": "磁盘空间使用统计工具，以彩色方块图展示文件类型和空间占用。",
+      "publisher": "Seifert",
+      "tags": [ "硬盘", "空间分析" ]
+    },
+    {
+      "match": "WizTree",
+      "description": "超快磁盘空间分析工具，使用 MFT 快速扫描 NTFS 分区文件占用。",
+      "publisher": "Antibody Software",
+      "tags": [ "硬盘", "空间分析" ]
+    },
+    {
+      "match": "FlashMaster",
+      "description": "U盘量产工具，用于 U盘芯片检测和量产修复。",
+      "publisher": "",
+      "tags": [ "硬盘", "U盘", "量产" ]
+    },
+    {
+      "match": "魔方数据恢复",
+      "description": "文件数据恢复工具，支持误删除、格式化和分区丢失的数据恢复。",
+      "publisher": "青岛软媒",
+      "tags": [ "硬盘", "数据恢复" ]
+    },
+    {
+      "match": "memtest",
+      "description": "内存稳定性测试工具，通过反复读写检测内存错误。",
+      "publisher": "",
+      "tags": [ "内存", "稳定性测试" ]
+    },
+    {
+      "match": "MemTest64",
+      "description": "64 位内存稳定性测试工具，支持大容量内存的错误检测。",
+      "publisher": "TechPowerUp",
+      "tags": [ "内存", "稳定性测试" ]
+    },
+    {
+      "match": "memtestpro",
+      "description": "专业版内存测试工具，支持多线程和更全面的内存错误检测。",
+      "publisher": "",
+      "tags": [ "内存", "稳定性测试" ]
+    },
+    {
+      "match": "Thaiphoon",
+      "description": "内存 SPD 信息读取工具，查看内存条制造商、时序、频率等详细参数。",
+      "publisher": "",
+      "tags": [ "内存", "SPD", "硬件检测" ]
+    },
+    {
+      "match": "TestMem5",
+      "description": "第五代内存稳定性测试工具（TM5），支持多种测试配置和极限压力测试。",
+      "publisher": "",
+      "tags": [ "内存", "稳定性测试" ]
+    },
+    {
+      "match": "魔方内存盘",
+      "description": "虚拟内存盘（RAM Disk）创建工具，将部分内存虚拟为高速磁盘。",
+      "publisher": "青岛软媒",
+      "tags": [ "内存", "虚拟磁盘" ]
+    },
+    {
+      "match": "ZenTimings",
+      "description": "AMD Zen 架构内存时序和频率查看工具。",
+      "publisher": "",
+      "tags": [ "内存", "AMD", "时序" ]
+    },
+    {
+      "match": "monitorinfo",
+      "description": "显示器色域检测工具，查看显示器色域覆盖率和面板信息。",
+      "publisher": "",
+      "tags": [ "显示器", "色域检测" ]
+    },
+    {
+      "match": "在线屏幕测试",
+      "description": "在线屏幕坏点、色彩和灰阶测试工具，通过浏览器进行屏幕检测。",
+      "publisher": "",
+      "tags": [ "显示器", "屏幕测试" ]
+    },
+    {
+      "match": "UFO",
+      "description": "UFO Test 在线显示器刷新率和运动模糊测试工具。",
+      "publisher": "",
+      "tags": [ "显示器", "刷新率测试" ]
+    },
+    {
+      "match": "AresonMouseTest",
+      "description": "鼠标按键和滚轮测试工具，检测鼠标各按键是否正常响应。",
+      "publisher": "Areson",
+      "tags": [ "外设", "鼠标测试" ]
+    },
+    {
+      "match": "Keyboard Test Utility",
+      "description": "键盘按键测试工具，逐键检测键盘每个按键是否正常工作。",
+      "publisher": "Javad Taheri",
+      "tags": [ "外设", "键盘测试" ]
+    },
+    {
+      "match": "KeyTweak",
+      "description": "键盘按键重映射工具，可自定义修改键盘按键映射关系。",
+      "publisher": "Travis Krumsick",
+      "tags": [ "外设", "键盘", "按键映射" ]
+    },
+    {
+      "match": "MOUSERATE",
+      "description": "鼠标回报率检测工具，实时测量鼠标 USB 报告速率（Hz）。",
+      "publisher": "",
+      "tags": [ "外设", "鼠标", "回报率" ]
+    },
+    {
+      "match": "MouseTester",
+      "description": "鼠标性能测试工具，检测鼠标移动轨迹、抖动和按键延迟。",
+      "publisher": "",
+      "tags": [ "外设", "鼠标测试" ]
+    },
+    {
+      "match": "鼠标单击变双击",
+      "description": "鼠标微动故障检测工具，识别鼠标单击变双击的微动老化问题。",
+      "publisher": "",
+      "tags": [ "外设", "鼠标测试" ]
+    },
+    {
+      "match": "在线外设测试",
+      "description": "在线外设综合测试中心，通过浏览器测试鼠标、键盘和显示器。",
+      "publisher": "",
+      "tags": [ "外设", "在线测试" ]
     },
     {
       "match": "AIDA64",
@@ -32,21 +344,202 @@
       "tags": [ "综合检测", "传感器" ]
     },
     {
-      "match": "DiskGenius",
-      "description": "磁盘分区、数据恢复、坏道检测和分区表维护工具。",
-      "publisher": "Eassos",
-      "tags": [ "硬盘", "分区" ]
+      "match": "HWMonitor",
+      "description": "硬件温度、电压和风扇转速监控工具，实时显示传感器数据。",
+      "publisher": "CPUID",
+      "tags": [ "综合检测", "温度监控" ]
     },
     {
-      "match": "DisplayX",
-      "description": "显示器纯色、坏点、灰阶和几何图形测试工具。",
-      "tags": [ "显示器", "屏幕测试" ]
+      "match": "RWEverything",
+      "description": "硬件寄存器读写工具，可访问 PCI、SMBus、Super I/O 等底层硬件信息。",
+      "publisher": "",
+      "tags": [ "综合检测", "底层读写" ]
+    },
+    {
+      "match": "Speccy",
+      "description": "系统硬件信息快速查看工具，提供简洁的硬件配置摘要。",
+      "publisher": "Piriform",
+      "tags": [ "综合检测", "硬件信息" ]
+    },
+    {
+      "match": "LatencyMon",
+      "description": "系统实时音频延迟检测工具，分析 DPC/ISR 延迟和硬页面错误，排查音频卡顿和爆音。",
+      "publisher": "Resplendence Software",
+      "tags": [ "声卡", "延迟检测", "DPC" ]
+    },
+    {
+      "match": "Steam",
+      "description": "Steam 游戏平台下载入口。",
+      "publisher": "Valve",
+      "tags": [ "游戏", "平台" ]
+    },
+    {
+      "match": "epic",
+      "description": "Epic Games 游戏平台下载入口。",
+      "publisher": "Epic Games",
+      "tags": [ "游戏", "平台" ]
+    },
+    {
+      "match": "battle",
+      "description": "Battle.net 暴雪战网平台下载入口。",
+      "publisher": "Blizzard",
+      "tags": [ "游戏", "平台" ]
+    },
+    {
+      "match": "eaapp",
+      "description": "EA App 电子艺界游戏平台下载入口。",
+      "publisher": "Electronic Arts",
+      "tags": [ "游戏", "平台" ]
+    },
+    {
+      "match": "GameBuff",
+      "description": "游戏加加硬件监控和游戏优化工具下载入口。",
+      "publisher": "GameBuff",
+      "tags": [ "游戏", "硬件监控" ]
+    },
+    {
+      "match": "风灵月影",
+      "description": "风灵月影游戏修改器下载入口，提供单机游戏作弊修改功能。",
+      "publisher": "FLiNG",
+      "tags": [ "游戏", "修改器" ]
+    },
+    {
+      "match": "斧牛加速器",
+      "description": "斧牛游戏网络加速器下载入口，降低游戏延迟。",
+      "publisher": "斧牛",
+      "tags": [ "游戏", "网络加速" ]
+    },
+    {
+      "match": "雷神加速器",
+      "description": "雷神游戏网络加速器下载入口，支持按时计费。",
+      "publisher": "雷神",
+      "tags": [ "游戏", "网络加速" ]
+    },
+    {
+      "match": "玩家动力",
+      "description": "玩家动力游戏加速器下载入口。",
+      "publisher": "玩家动力",
+      "tags": [ "游戏", "网络加速" ]
+    },
+    {
+      "match": "迅雷加速器",
+      "description": "迅雷游戏网络加速器下载入口。",
+      "publisher": "迅雷",
+      "tags": [ "游戏", "网络加速" ]
+    },
+    {
+      "match": "迅游加速器",
+      "description": "迅游游戏网络加速器下载入口，老牌游戏加速器。",
+      "publisher": "迅游",
+      "tags": [ "游戏", "网络加速" ]
     },
     {
       "match": "BatteryInfoView",
       "description": "笔记本电池容量、循环、损耗和实时状态查看工具。",
       "publisher": "NirSoft",
-      "tags": [ "电池", "其他工具" ]
+      "tags": [ "电池", "硬件检测" ]
+    },
+    {
+      "match": "BlueScreenView",
+      "description": "蓝屏崩溃转储分析工具，查看 BSOD 错误代码和导致崩溃的驱动。",
+      "publisher": "NirSoft",
+      "tags": [ "系统", "蓝屏分析" ]
+    },
+    {
+      "match": "DesktopOK",
+      "description": "桌面图标位置保存和恢复工具，防止分辨率变化后图标排列混乱。",
+      "publisher": "SoftwareOK",
+      "tags": [ "系统", "桌面管理" ]
+    },
+    {
+      "match": "DirectX Repair",
+      "description": "DirectX 修复工具，自动检测和修复 DirectX 组件缺失或损坏问题。",
+      "publisher": "",
+      "tags": [ "系统", "DirectX", "修复" ]
+    },
+    {
+      "match": "Dism++",
+      "description": "Windows 系统精简和优化工具，基于 DISM 的图形化系统管理工具。",
+      "publisher": "Chuyu Team",
+      "tags": [ "系统", "系统优化", "精简" ]
+    },
+    {
+      "match": "Everything",
+      "description": "超快文件搜索工具，基于 NTFS USN 日志实现瞬间文件名搜索。",
+      "publisher": "voidtools",
+      "tags": [ "系统", "文件搜索" ]
+    },
+    {
+      "match": "Geek Uninstaller",
+      "description": "轻量级软件卸载工具，支持强制卸载和清理残留注册表。",
+      "publisher": "Geek Uninstaller",
+      "tags": [ "系统", "软件卸载" ]
+    },
+    {
+      "match": "GifCam",
+      "description": "GIF 动画录制工具，通过窗口框选区域直接录制 GIF 图片。",
+      "publisher": "Bahraniapps",
+      "tags": [ "系统", "GIF录制" ]
+    },
+    {
+      "match": "MSIAfterburner",
+      "description": "MSI Afterburner 显卡超频监控工具下载入口，支持所有品牌显卡。",
+      "publisher": "MSI",
+      "tags": [ "显卡", "超频", "监控" ]
+    },
+    {
+      "match": "next_itellyou",
+      "description": "MSDN I Tell You 在线系统镜像下载入口，提供微软原版系统镜像。",
+      "publisher": "",
+      "tags": [ "系统", "系统镜像" ]
+    },
+    {
+      "match": "Process Explorer",
+      "description": "高级进程管理工具，以树状结构显示进程关系和详细系统资源占用。",
+      "publisher": "Sysinternals",
+      "tags": [ "系统", "进程管理" ]
+    },
+    {
+      "match": "Rufus",
+      "description": "U盘启动盘制作工具，快速创建可引导 USB 安装盘。",
+      "publisher": "Akeo Consulting",
+      "tags": [ "系统", "U盘启动" ]
+    },
+    {
+      "match": "UltraISO",
+      "description": "光盘映像文件制作和编辑工具，支持 ISO 创建、编辑和刻录。",
+      "publisher": "EZB Systems",
+      "tags": [ "系统", "ISO", "光盘映像" ]
+    },
+    {
+      "match": "Ventoy",
+      "description": "多系统 U盘启动制作工具，直接拷贝 ISO 文件即可启动，无需反复格式化。",
+      "publisher": "",
+      "tags": [ "系统", "U盘启动" ]
+    },
+    {
+      "match": "WinDbg",
+      "description": "微软官方内核级调试器，用于驱动和系统级问题的深度调试分析。",
+      "publisher": "Microsoft",
+      "tags": [ "系统", "调试" ]
+    },
+    {
+      "match": "皮肤编辑器",
+      "description": "图吧工具箱皮肤在线编辑器入口。",
+      "publisher": "",
+      "tags": [ "其他", "皮肤" ]
+    },
+    {
+      "match": "天梯图",
+      "description": "CPU 和显卡性能天梯图，直观对比各型号性能排名。",
+      "publisher": "",
+      "tags": [ "CPU", "显卡", "性能排名" ]
+    },
+    {
+      "match": "游戏加加",
+      "description": "游戏加加硬件监控和游戏优化工具下载入口。",
+      "publisher": "游戏加加",
+      "tags": [ "游戏", "硬件监控" ]
     }
   ]
 }

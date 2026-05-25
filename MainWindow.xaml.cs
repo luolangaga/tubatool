@@ -61,6 +61,8 @@ public sealed partial class MainWindow : Window
                     break;
             }
         }
+
+        ThemeService.ApplySavedTheme();
     }
 
     private void PopulateCategories()
@@ -107,6 +109,11 @@ public sealed partial class MainWindow : Window
         if (category.Contains("烤鸡", StringComparison.CurrentCultureIgnoreCase))
         {
             return "\uE945";
+        }
+
+        if (category.Contains("声卡", StringComparison.CurrentCultureIgnoreCase))
+        {
+            return "\uEA69";
         }
 
         return "\uE8B7";

@@ -68,7 +68,48 @@
                 </Border>
 
                 <Border Style="{StaticResource SettingsCardStyle}">
-                    <Grid RowSpacing="16">
+                    <Grid RowSpacing="14">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <TextBlock
+                            FontSize="18"
+                            FontWeight="SemiBold"
+                            Text="外观" />
+
+                        <Grid Grid.Row="1" ColumnSpacing="14">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <Border
+                                Width="44"
+                                Height="44"
+                                Background="{ThemeResource SubtleFillColorSecondaryBrush}"
+                                CornerRadius="8">
+                                <FontIcon FontSize="22" Glyph="&#xE790;" />
+                            </Border>
+
+                            <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="3">
+                                <TextBlock FontWeight="SemiBold" Text="应用主题" />
+                                <TextBlock Opacity="0.68" Text="选择浅色、深色或跟随系统" />
+                            </StackPanel>
+
+                            <ComboBox
+                                x:Name="ThemeComboBox"
+                                Grid.Column="2"
+                                MinWidth="120"
+                                SelectionChanged="ThemeComboBox_SelectionChanged" />
+                        </Grid>
+                    </Grid>
+                </Border>
+
+                <Border Style="{StaticResource SettingsCardStyle}">
+                    <Grid RowSpacing="14">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
@@ -297,6 +338,52 @@
                                 </Grid>
                             </Border>
                         </StackPanel>
+                    </Grid>
+                </Border>
+
+                <Border Style="{StaticResource SettingsCardStyle}">
+                    <Grid RowSpacing="14">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <TextBlock
+                            FontSize="18"
+                            FontWeight="SemiBold"
+                            Text="开发者" />
+
+                        <Grid Grid.Row="1" ColumnSpacing="14">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <Border
+                                Width="44"
+                                Height="44"
+                                Background="{ThemeResource SubtleFillColorSecondaryBrush}"
+                                CornerRadius="8">
+                                <FontIcon FontSize="22" Glyph="&#xE90F;" />
+                            </Border>
+
+                            <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="3">
+                                <TextBlock FontWeight="SemiBold" Text="测试异常页面" />
+                                <TextBlock Opacity="0.68" Text="手动抛出一个未处理异常，用于验证全局错误页面。" />
+                            </StackPanel>
+
+                            <Button
+                                Grid.Column="2"
+                                VerticalAlignment="Center"
+                                Padding="14,6"
+                                Click="ThrowErrorButton_Click">
+                                <StackPanel Orientation="Horizontal" Spacing="6">
+                                    <FontIcon FontSize="12" Glyph="&#xE783;" />
+                                    <TextBlock Text="抛出异常" />
+                                </StackPanel>
+      </Button>
+                        </Grid>
                     </Grid>
                 </Border>
 

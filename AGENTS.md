@@ -31,7 +31,6 @@ Pages/
   HomePage           → tool grid, search, launch (Process.Start)
   HardwarePage       → WMI hardware info via HardwareInfoService
   SettingsPage       → placeholder
-  AboutPage          → placeholder
 Services/
   ToolCatalog        → scans Tools/ for launchable files (.exe .bat .cmd .lnk .msc .ps1 .vbs)
   ToolMetadataService→ merges tools.json metadata + FileVersionInfo + readme.txt

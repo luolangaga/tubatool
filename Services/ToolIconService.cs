@@ -12,6 +12,8 @@ public static class ToolIconService
         "TubaWinUi3",
         "IconCache");
 
+    private static readonly TimeSpan CacheMaxAge = TimeSpan.FromDays(90);
+
     public static string? GetIconPath(string toolPath)
     {
         if (!File.Exists(toolPath))
@@ -28,9 +30,14 @@ public static class ToolIconService
 
         Directory.CreateDirectory(CacheRoot);
         var iconPath = Path.Combine(CacheRoot, $"{Hash(toolPath)}.png");
+
         if (File.Exists(iconPath))
         {
-            return iconPath;
+            var age = DateTime.UtcNow - File.GetLastWriteTimeUtc(iconPath);
+            if (age < CacheMaxAge)
+                return iconPath;
+
+            try { File.Delete(iconPath); } catch { return iconPath; }
         }
 
         try
@@ -50,6 +57,36 @@ public static class ToolIconService
             Debug.WriteLine($"Unable to extract icon for {toolPath}: {ex.Message}");
             return null;
         }
+    }
+
+    public static void CleanExpiredCache()
+    {
+        if (!Directory.Exists(CacheRoot))
+            return;
+
+        var cutoff = DateTime.UtcNow - CacheMaxAge;
+
+        foreach (var file in Directory.EnumerateFiles(CacheRoot, "*.png"))
+        {
+            try
+            {
+                if (File.GetLastWriteTimeUtc(file) < cutoff)
+                    File.Delete(file);
+            }
+            catch { }
+        }
+    }
+
+    public static void CleanAllCache()
+    {
+        if (!Directory.Exists(CacheRoot))
+            return;
+
+        try
+        {
+            Directory.Delete(CacheRoot, true);
+        }
+        catch { }
     }
 
     private static string Hash(string value)

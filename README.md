@@ -1,4 +1,4 @@
-# 图吧工具箱 TubaWinUi3
+7# 图吧工具箱 TubaWinUi3
 
 一个用 WinUI 3 做的 PC 硬件工具集合，把硬件检测、压力测试、系统优化之类的工具收在一起，打开就能用。
 
@@ -198,4 +198,7 @@ dotnet run          # 运行（Unpackaged 模式）
 
 ## 开源协议
 
-请查看项目中的 LICENSE 文件。
+MIT
+
+
+[![Stargazers over time](https://starchart.cc/luolangaga/tubatool.svg?variant=adaptive)](https://starchart.cc/luolangaga/tubatool)

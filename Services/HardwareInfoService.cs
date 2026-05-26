@@ -102,26 +102,49 @@ public static class HardwareInfoService
 
     private static string FormatDisplays()
     {
-        var monitors = QueryWmiNamespace("root\\WMI", "WmiMonitorID")
-            .Select(item =>
+        var monitors = new List<string>();
+
+        try
+        {
+            using var searcher = new ManagementObjectSearcher("root\\WMI", "SELECT * FROM WmiMonitorID");
+            foreach (ManagementBaseObject item in searcher.Get())
             {
-                var mfr = GetManufacturerName(Get(item, "ManufacturerName"));
-                var product = DecodeWmiString(Get(item, "ProductName"));
-                var serial = DecodeWmiString(Get(item, "SerialNumberID"));
+                var mfr = DecodeWmiArray(item, "ManufacturerName");
+                var product = DecodeWmiArray(item, "ProductName");
+                var serial = DecodeWmiArray(item, "SerialNumberID");
                 var pnpId = Get(item, "InstanceName")?.Split('\\').FirstOrDefault() ?? "";
 
+                var mfrLabel = ResolveManufacturer(mfr);
                 var parts = new List<string>();
-                if (!string.IsNullOrWhiteSpace(mfr)) parts.Add(mfr);
-                if (!string.IsNullOrWhiteSpace(product)) parts.Add(product);
-                if (parts.Count == 0 && !string.IsNullOrWhiteSpace(pnpId)) parts.Add(DecodePnpManufacturer(pnpId));
+                if (!string.IsNullOrWhiteSpace(mfrLabel)) parts.Add(mfrLabel);
+                if (!string.IsNullOrWhiteSpace(product) && product != mfrLabel) parts.Add(product);
+                if (parts.Count == 0 && !string.IsNullOrWhiteSpace(pnpId))
+                {
+                    var pnpMfr = ResolveManufacturer(pnpId.Length >= 3 ? pnpId.Substring(0, 3) : pnpId);
+                    if (!string.IsNullOrWhiteSpace(pnpMfr)) parts.Add(pnpMfr);
+                }
 
                 var label = string.Join(" ", parts.Distinct());
                 if (!string.IsNullOrWhiteSpace(serial) && serial != "0") label += $" (SN:{serial})";
-                return string.IsNullOrWhiteSpace(label) ? null : label;
-            })
-            .Where(v => !string.IsNullOrWhiteSpace(v))
-            .Distinct()
-            .ToList();
+                if (!string.IsNullOrWhiteSpace(label)) monitors.Add(label);
+            }
+        }
+        catch { }
+
+        if (monitors.Count == 0)
+        {
+            var pnpNames = Query("Win32_PnPEntity")
+                .Where(item =>
+                {
+                    var pnpClass = Get(item, "PNPClass");
+                    return pnpClass == "Monitor";
+                })
+                .Select(item => Get(item, "Name"))
+                .Where(v => !string.IsNullOrWhiteSpace(v))
+                .Distinct()
+                .ToList();
+            monitors.AddRange(pnpNames!);
+        }
 
         var resolutions = Query("Win32_VideoController")
             .Select(item =>
@@ -147,72 +170,52 @@ public static class HardwareInfoService
         }));
     }
 
-    private static IEnumerable<ManagementBaseObject> QueryWmiNamespace(string ns, string className)
+    private static string? DecodeWmiArray(ManagementBaseObject item, string propName)
     {
-        ManagementObjectCollection? collection = null;
         try
         {
-            using var searcher = new ManagementObjectSearcher($"{ns}", $"SELECT * FROM {className}");
-            collection = searcher.Get();
+            var val = item[propName];
+            if (val is ushort[] arr)
+            {
+                var chars = arr.TakeWhile(c => c > 0).Select(c => (char)c).ToArray();
+                return chars.Length > 0 ? new string(chars).Trim() : null;
+            }
+            if (val is byte[] barr)
+            {
+                var chars = barr.TakeWhile(b => b > 0).Select(b => (char)b).ToArray();
+                return chars.Length > 0 ? new string(chars).Trim() : null;
+            }
+            return val?.ToString()?.Trim();
         }
-        catch { yield break; }
-
-        foreach (ManagementBaseObject item in collection) yield return item;
+        catch { return null; }
     }
 
-    private static string? DecodeWmiString(string? raw)
+    private static string? ResolveManufacturer(string? code)
     {
-        if (string.IsNullOrWhiteSpace(raw)) return null;
-        var trimmed = raw.Trim('{', '}', ' ');
-        var chars = trimmed.Split(',')
-            .Select(s => int.TryParse(s.Trim(), out var c) ? c : 0)
-            .TakeWhile(c => c > 0)
-            .Select(c => (char)c)
-            .ToArray();
-        return chars.Length > 0 ? new string(chars).Trim() : null;
-    }
-
-    private static string? GetManufacturerName(string? raw)
-    {
-        var decoded = DecodeWmiString(raw);
-        if (string.IsNullOrWhiteSpace(decoded)) return null;
-        return decoded switch
+        if (string.IsNullOrWhiteSpace(code)) return null;
+        return code.Trim().ToUpperInvariant() switch
         {
             "ACI" or "ACR" => "Acer",
-            "AUO" or "AUO_" => "AU Optronics",
+            "AUO" or "AUO_" => "AU Optronics(友达)",
             "BOE" or "BOE_" => "京东方",
-            "CMN" => "奇美",
-            "CSO" => "华星光电",
-            "IVO" => "天马",
-            "INL" => "Innolux",
+            "CMN" => "奇美(Chimei)",
+            "CSO" => "华星光电(CSO)",
+            "DIS" => "Dell",
+            "DEL" => "Dell",
+            "HSD" => "瀚宇彩晶(HannStar)",
+            "HKC" => "HKC",
+            "IVO" => "天马(IVO)",
+            "INL" => "Innolux(群创)",
             "LGD" or "LPL" => "LG Display",
             "LEN" or "LEN_" => "联想",
-            "SEC" or "SDC" => "三星",
+            "SEC" or "SDC" => "三星(Samsung)",
             "SHV" => "Sharp",
-            _ => decoded
-        };
-    }
-
-    private static string DecodePnpManufacturer(string pnpId)
-    {
-        if (pnpId.Length < 3) return pnpId;
-        var code = pnpId.Substring(0, 3).ToUpperInvariant();
-        return code switch
-        {
-            "ACI" or "ACR" => "Acer",
-            "AUO" => "AU Optronics",
-            "BOE" => "京东方",
-            "CMN" => "奇美",
-            "CSO" => "华星光电",
-            "DEL" => "Dell",
-            "HSD" => "瀚宇彩晶",
-            "HKC" => "HKC",
-            "IVO" => "天马",
-            "INL" => "Innolux",
-            "LGD" or "LPL" => "LG Display",
-            "LEN" => "联想",
-            "SAM" or "SDC" or "SEC" => "三星",
-            "SHV" => "Sharp",
+            "SAM" => "三星(Samsung)",
+            "SNY" => "Sony",
+            "HWP" or "HEW" => "HP",
+            "NEC" => "NEC",
+            "MEL" => "Mitsubishi",
+            "FNI" => "Funai",
             _ => code
         };
     }

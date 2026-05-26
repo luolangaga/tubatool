@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentDialog
+    x:Class="TubaWinUi3.Pages.UpdateDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Title="发现新版本"
+    PrimaryButtonText="立即更新"
+    SecondaryButtonText="稍后提醒"
+    CloseButtonText="跳过此版本"
+    DefaultButton="Primary"
+    PrimaryButtonClick="OnPrimaryButtonClick"
+    SecondaryButtonClick="OnSecondaryButtonClick"
+    CloseButtonClick="OnCloseButtonClick">
+
+    <ContentDialog.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
+            </ResourceDictionary.MergedDictionaries>
+            <CornerRadius x:Key="DialogCornerRadius">12</CornerRadius>
+        </ResourceDictionary>
+    </ContentDialog.Resources>
+
+    <Grid RowSpacing="16" MinWidth="460">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- Version Header -->
+        <Border
+            Padding="20,16"
+            Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+            BorderThickness="1"
+            CornerRadius="10">
+            <Grid ColumnSpacing="16">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Border
+                    Width="52"
+                    Height="52"
+                    Background="{ThemeResource AccentFillColorDefaultBrush}"
+                    CornerRadius="14">
+                    <FontIcon
+                        FontSize="26"
+                        Foreground="{ThemeResource TextOnAccentFillColorPrimaryBrush}"
+                        Glyph="&#xE895;" />
+                </Border>
+
+                <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="4">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <TextBlock
+                            FontSize="20"
+                            FontWeight="SemiBold"
+                            Text="v" />
+                        <TextBlock
+                            x:Name="NewVersionText"
+                            FontSize="20"
+                            FontWeight="SemiBold" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Spacing="6">
+                        <FontIcon
+                            FontSize="12"
+                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                            Glyph="&#xE823;" />
+                        <TextBlock
+                            x:Name="PublishDateText"
+                            FontSize="12"
+                            Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Changelog -->
+        <Border
+            Grid.Row="1"
+            Padding="16"
+            Background="{ThemeResource SubtleFillColorSecondaryBrush}"
+            CornerRadius="10"
+            MaxHeight="180">
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <TextBlock
+                    x:Name="ChangelogText"
+                    FontSize="13"
+                    TextWrapping="Wrap"
+                    Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                    IsTextSelectionEnabled="True" />
+            </ScrollViewer>
+        </Border>
+
+        <!-- Proxy Speed Test Section (hidden until update starts) -->
+        <StackPanel
+            x:Name="ProxySection"
+            Grid.Row="2"
+            Spacing="8"
+            Visibility="Collapsed">
+
+            <StackPanel
+                x:Name="ProxyHeader"
+                Orientation="Horizontal"
+                Spacing="8">
+                <FontIcon
+                    FontSize="16"
+                    Glyph="&#xE968;"
+                    Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}" />
+                <TextBlock
+                    FontSize="14"
+                    FontWeight="SemiBold"
+                    Text="GitHub 代理测速" />
+                <ProgressRing
+                    x:Name="ProxyTestRing"
+                    Width="18"
+                    Height="18"
+                    Visibility="Collapsed" />
+            </StackPanel>
+
+            <Border
+                Padding="12"
+                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                BorderThickness="1"
+                CornerRadius="8">
+                <StackPanel x:Name="ProxyListPanel" Spacing="6">
+                    <TextBlock
+                        x:Name="ProxyStatusText"
+                        FontSize="12"
+                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                        Text="正在测试代理连接速度..." />
+                </StackPanel>
+            </Border>
+        </StackPanel>
+
+        <!-- Download Progress Section -->
+        <StackPanel
+            x:Name="DownloadSection"
+            Grid.Row="3"
+            Spacing="10"
+            Visibility="Collapsed">
+
+            <StackPanel Orientation="Horizontal" Spacing="8">
+                <FontIcon
+                    FontSize="16"
+                    Glyph="&#xE896;"
+                    Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}" />
+                <TextBlock
+                    FontSize="14"
+                    FontWeight="SemiBold"
+                    Text="正在下载更新" />
+            </StackPanel>
+
+            <ProgressBar
+                x:Name="DownloadProgressBar"
+                IsIndeterminate="False"
+                ShowError="False"
+                ShowPaused="False" />
+
+            <Grid ColumnSpacing="12">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Orientation="Horizontal" Spacing="16">
+                    <StackPanel Orientation="Horizontal" Spacing="4">
+                        <FontIcon
+                            FontSize="11"
+                            Glyph="&#xE921;"
+                            Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                        <TextBlock
+                            x:Name="DownloadSpeedText"
+                            FontSize="12"
+                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                            Text="--" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Spacing="4">
+                        <FontIcon
+                            FontSize="11"
+                            Glyph="&#xE8B7;"
+                            Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                        <TextBlock
+                            x:Name="DownloadSizeText"
+                            FontSize="12"
+                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                            Text="--" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Spacing="4">
+                        <FontIcon
+                            FontSize="11"
+                            Glyph="&#xE917;"
+                            Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                        <TextBlock
+                            x:Name="DownloadTimeText"
+                            FontSize="12"
+                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                            Text="--" />
+                    </StackPanel>
+                </StackPanel>
+
+                <TextBlock
+                    x:Name="DownloadPercentText"
+                    Grid.Column="1"
+                    FontSize="12"
+                    FontWeight="SemiBold"
+                    Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                    Text="0%" />
+            </Grid>
+        </StackPanel>
+
+        <!-- Error Section -->
+        <InfoBar
+            x:Name="ErrorInfoBar"
+            Grid.Row="4"
+            IsOpen="False"
+            IsClosable="True"
+            Severity="Error"
+            Title="更新失败" />
+
+    </Grid>
+</ContentDialog>

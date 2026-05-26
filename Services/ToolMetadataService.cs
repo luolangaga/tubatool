@@ -7,27 +7,49 @@ public sealed record ToolMetadata(
     string? Description,
     string? Publisher,
     string? Version,
-    string? DatabaseSource);
+    string? DatabaseSource,
+    string? DownloadUrl,
+    string? DownloadFilter);
 
 public static class ToolMetadataService
 {
     private static IReadOnlyList<JsonToolMetadata>? _metadata;
 
+    public static bool HasDownloadUrl(string category, string toolDir)
+    {
+        var dirName = Path.GetFileName(toolDir);
+        var metadata = LoadMetadata();
+
+        return metadata.Any(item =>
+            !string.IsNullOrWhiteSpace(item.Match) &&
+            !string.IsNullOrWhiteSpace(item.DownloadUrl) &&
+            dirName.Contains(item.Match, StringComparison.CurrentCultureIgnoreCase));
+    }
+
     public static ToolMetadata GetMetadata(string category, string toolPath)
     {
-        var versionInfo = FileVersionInfo.GetVersionInfo(toolPath);
+        FileVersionInfo? versionInfo = null;
+        try
+        {
+            if (File.Exists(toolPath))
+                versionInfo = FileVersionInfo.GetVersionInfo(toolPath);
+        }
+        catch { }
+
         var jsonMetadata = FindJsonMetadata(toolPath);
         var description = FirstUseful(
             jsonMetadata?.Description,
-            versionInfo.FileDescription,
-            versionInfo.ProductName,
+            versionInfo?.FileDescription,
+            versionInfo?.ProductName,
             ReadFolderDescription(toolPath));
 
         return new ToolMetadata(
             description,
-            FirstUseful(jsonMetadata?.Publisher, versionInfo.CompanyName, versionInfo.LegalCopyright),
-            FirstUseful(versionInfo.ProductVersion, versionInfo.FileVersion),
-            jsonMetadata is null ? null : "JSON");
+            FirstUseful(jsonMetadata?.Publisher, versionInfo?.CompanyName, versionInfo?.LegalCopyright),
+            FirstUseful(versionInfo?.ProductVersion, versionInfo?.FileVersion),
+            jsonMetadata is null ? null : "JSON",
+            jsonMetadata?.DownloadUrl,
+            jsonMetadata?.DownloadFilter);
     }
 
     private static JsonToolMetadata? FindJsonMetadata(string toolPath)
@@ -134,5 +156,9 @@ public static class ToolMetadataService
         public string? Description { get; set; }
 
         public string? Publisher { get; set; }
+
+        public string? DownloadUrl { get; set; }
+
+        public string? DownloadFilter { get; set; }
     }
 }

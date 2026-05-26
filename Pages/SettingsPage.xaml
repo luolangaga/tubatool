@@ -77,6 +77,56 @@
                         <TextBlock
                             FontSize="18"
                             FontWeight="SemiBold"
+                            Text="更新" />
+
+                        <Grid Grid.Row="1" ColumnSpacing="14">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <Border
+                                Width="44"
+                                Height="44"
+                                Background="{ThemeResource SubtleFillColorSecondaryBrush}"
+                                CornerRadius="8">
+                                <FontIcon FontSize="22" Glyph="&#xE895;" />
+                            </Border>
+
+                            <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="3">
+                                <TextBlock FontWeight="SemiBold" Text="检查更新" />
+                                <TextBlock
+                                    x:Name="UpdateStatusText"
+                                    Opacity="0.68"
+                                    Text="点击检查是否有新版本" />
+                            </StackPanel>
+
+                            <Button
+                                x:Name="CheckUpdateButton"
+                                Grid.Column="2"
+                                VerticalAlignment="Center"
+                                Padding="14,6"
+                                Click="CheckUpdateButton_Click">
+                                <StackPanel Orientation="Horizontal" Spacing="6">
+                                    <FontIcon FontSize="12" Glyph="&#xE895;" />
+                                    <TextBlock Text="检查更新" />
+                                </StackPanel>
+                            </Button>
+                        </Grid>
+                    </Grid>
+                </Border>
+
+                <Border Style="{StaticResource SettingsCardStyle}">
+                    <Grid RowSpacing="14">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <TextBlock
+                            FontSize="18"
+                            FontWeight="SemiBold"
                             Text="外观" />
 
                         <Grid Grid.Row="1" ColumnSpacing="14">

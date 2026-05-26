@@ -2,8 +2,8 @@ $ErrorActionPreference = 'Stop'
 
 $ProjectDir  = 'C:\Users\luolan\Desktop\tubawinui3'
 $ISCC        = 'C:\Program Files (x86)\Inno Setup 6\ISCC.exe'
-$Version     = '1.0.1.0'
-$VersionShort = '1.0.1'
+$Version     = '1.0.2.0'
+$VersionShort = '1.0.2'
 
 function Remove-UnnecessaryFiles {
     param([string]$Root)
@@ -75,6 +75,12 @@ function Publish-Arch {
     if (-not (Test-Path -LiteralPath (Join-Path $outDir 'TubaWinUi3.exe'))) {
         Write-Host "  ERROR: Publish failed for $Arch" -ForegroundColor Red
         return $false
+    }
+
+    $priFile = Join-Path $ProjectDir "bin\$Arch\Release\net10.0-windows10.0.26100.0\win-$Arch\TubaWinUi3.pri"
+    if (Test-Path -LiteralPath $priFile) {
+        Copy-Item -LiteralPath $priFile -Destination $outDir -Force
+        Write-Host '  Restored TubaWinUi3.pri' -ForegroundColor Green
     }
 
     Write-Host '  Removing unnecessary files...' -ForegroundColor Yellow

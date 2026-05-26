@@ -540,6 +540,110 @@
       "description": "游戏加加硬件监控和游戏优化工具下载入口。",
       "publisher": "游戏加加",
       "tags": [ "游戏", "硬件监控" ]
+    },
+    {
+      "match": "MorePowerTool",
+      "description": "AMD 显卡功率限制解锁和 BIOS 编辑工具，可修改 Radeon RX 5000/6000/7000 系列的功率限制、频率和电压。",
+      "publisher": "Igor's Lab (Red Bios Rebellion Team)",
+      "tags": [ "显卡", "AMD", "BIOS编辑", "功率解锁" ]
+    },
+    {
+      "match": "nvflash",
+      "description": "NVIDIA 显卡 BIOS 刷写工具，支持 Blackwell/Ada/Ampere/Turing/Pascal 等全系 NVIDIA 显卡 BIOS 刷写和备份。",
+      "publisher": "NVIDIA",
+      "tags": [ "显卡", "NVIDIA", "BIOS刷写" ]
+    },
+    {
+      "match": "fptw64",
+      "description": "Intel Flash Programming Tool 64 位版，用于刷写和备份 Intel 主板 BIOS/ME 固件。",
+      "publisher": "Intel",
+      "tags": [ "主板", "BIOS刷写", "Intel" ]
+    },
+    {
+      "match": "Cinebench",
+      "description": "CPU/GPU 渲染性能基准测试工具，基于 Cinema 4D 引擎，跑分圈标杆。",
+      "publisher": "Maxon",
+      "tags": [ "CPU", "显卡", "跑分", "性能测试" ],
+      "downloadUrl": "https://www.maxon.net/en/downloads/cinebench-2024-downloads"
+    },
+    {
+      "match": "BlenderBenchmark",
+      "description": "Blender 渲染性能基准测试工具，评估 CPU/GPU 的 3D 渲染能力。",
+      "publisher": "Blender Foundation",
+      "tags": [ "CPU", "显卡", "跑分", "性能测试" ],
+      "downloadUrl": "gh:blender-open-data/launcher"
+    },
+    {
+      "match": "FanControl",
+      "description": "开源风扇曲线控制工具，支持自定义风扇转速策略和多风扇联动控制。",
+      "publisher": "Rem0o",
+      "tags": [ "风扇", "温控", "开源" ],
+      "downloadUrl": "gh:Rem0o/FanControl.Releases",
+      "downloadFilter": "*net*_10_*.zip"
+    },
+    {
+      "match": "PowerToys",
+      "description": "微软官方系统增强工具集，包含窗口管理、颜色拾取、批量重命名、快捷键指南等实用功能。",
+      "publisher": "Microsoft",
+      "tags": [ "系统", "系统增强", "微软官方" ],
+      "downloadUrl": "gh:microsoft/PowerToys",
+      "downloadFilter": "*UserSetup*x64*.exe"
+    },
+    {
+      "match": "USBDeview",
+      "description": "USB 设备历史记录查看和管理工具，可查看所有曾连接的 USB 设备详情和供电信息。",
+      "publisher": "NirSoft",
+      "tags": [ "USB", "设备管理", "硬件检测" ]
+    },
+    {
+      "match": "USBTreeView",
+      "description": "USB 控制器拓扑结构查看工具，以树状图展示 USB 控制器、集线器和设备层级关系。",
+      "publisher": "Uwe Sieber",
+      "tags": [ "USB", "拓扑", "硬件检测" ]
+    },
+    {
+      "match": "RAMMap",
+      "description": "物理内存分配详细查看工具，以多种视图展示内存使用、缓存和进程占用。",
+      "publisher": "Sysinternals",
+      "tags": [ "内存", "内存分析", "系统工具" ]
+    },
+    {
+      "match": "Autoruns",
+      "description": "开机启动项和自注册管理工具，可管理所有自启动位置包括驱动、服务和计划任务。",
+      "publisher": "Sysinternals",
+      "tags": [ "系统", "启动项", "系统优化" ]
+    },
+{
+      "match": "PowerToys",
+      "description": "微软官方系统增强工具集，包含窗口管理、颜色拾取、批量重命名、快捷键指南等实用功能。",
+      "publisher": "Microsoft",
+      "tags": [ "系统", "系统增强", "微软官方" ],
+      "downloadUrl": "gh:microsoft/PowerToys",
+      "downloadFilter": "*UserSetup*x64*.exe"
+    },
+    {
+      "match": "USBDeview",
+      "description": "USB 设备历史记录查看和管理工具，可查看所有曾连接的 USB 设备详情和供电信息。",
+      "publisher": "NirSoft",
+      "tags": [ "USB", "设备管理", "硬件检测" ]
+    },
+    {
+      "match": "USBTreeView",
+      "description": "USB 控制器拓扑结构查看工具，以树状图展示 USB 控制器、集线器和设备层级关系。",
+      "publisher": "Uwe Sieber",
+      "tags": [ "USB", "拓扑", "硬件检测" ]
+    },
+    {
+      "match": "RAMMap",
+      "description": "物理内存分配详细查看工具，以多种视图展示内存使用、缓存和进程占用。",
+      "publisher": "Sysinternals",
+      "tags": [ "内存", "内存分析", "系统工具" ]
+    },
+    {
+      "match": "Autoruns",
+      "description": "开机启动项和自注册管理工具，可管理所有自启动位置包括驱动、服务和计划任务。",
+      "publisher": "Sysinternals",
+      "tags": [ "系统", "启动项", "系统优化" ]
     }
   ]
 }

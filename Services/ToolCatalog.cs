@@ -45,9 +45,10 @@ public static class ToolCatalog
             return [];
         }
 
-        return Directory.EnumerateFiles(categoryRoot, "*", SearchOption.AllDirectories)
-            .Where(IsLaunchable)
-            .Select(path => CreateToolItem(category, categoryRoot, path))
+        return Directory.GetDirectories(categoryRoot)
+            .Select(toolDir => (toolDir, launchable: FindPrimaryLaunchable(toolDir)))
+            .Where(x => x.launchable is not null || ToolMetadataService.HasDownloadUrl(category, x.toolDir))
+            .Select(x => CreateToolItem(category, categoryRoot, x.launchable ?? CreatePlaceholderPath(x.toolDir)))
             .OrderBy(item => item.Name, StringComparer.CurrentCultureIgnoreCase)
             .ThenBy(item => item.RelativePath, StringComparer.CurrentCultureIgnoreCase)
             .ToList();
@@ -101,6 +102,7 @@ public static class ToolCatalog
         var name = GetDisplayName(path);
         var relativePath = Path.GetRelativePath(categoryRoot, path);
         var metadata = ToolMetadataService.GetMetadata(category, path);
+        var isPlaceholder = !File.Exists(path) && !string.IsNullOrWhiteSpace(metadata.DownloadUrl);
 
         return new ToolItem
         {
@@ -108,13 +110,15 @@ public static class ToolCatalog
             Category = category,
             Path = path,
             RelativePath = relativePath,
-            Extension = extension.TrimStart('.').ToUpperInvariant(),
-            IconPath = ToolIconService.GetIconPath(path),
+            Extension = isPlaceholder ? "待下载" : extension.TrimStart('.').ToUpperInvariant(),
+            IconPath = isPlaceholder ? null : ToolIconService.GetIconPath(path),
             Description = metadata.Description,
             Publisher = metadata.Publisher,
             Version = metadata.Version,
             DatabaseSource = metadata.DatabaseSource,
-            IsFavorite = FavoritesService.IsFavorite(path)
+            DownloadUrl = metadata.DownloadUrl,
+            DownloadFilter = metadata.DownloadFilter,
+            IsFavorite = isPlaceholder ? false : FavoritesService.IsFavorite(path)
         };
     }
 
@@ -122,6 +126,75 @@ public static class ToolCatalog
     {
         var extension = Path.GetExtension(path);
         return LaunchableExtensions.Contains(extension, StringComparer.OrdinalIgnoreCase);
+    }
+
+    private static readonly string[] ArchSuffixes =
+    [
+        "64", "32", "x64", "x86", "_x64", "_x86", "_64", "_32",
+        "w64", "w32", "_Win64", "_Win32", "ARM64", "_ARM64"
+    ];
+
+    private static string? FindPrimaryLaunchable(string toolDir)
+    {
+        var dirName = Path.GetFileName(toolDir);
+
+        var allLaunchables = Directory.EnumerateFiles(toolDir, "*", SearchOption.AllDirectories)
+            .Where(IsLaunchable)
+            .ToList();
+
+        if (allLaunchables.Count == 0)
+            return null;
+
+        if (allLaunchables.Count == 1)
+            return allLaunchables[0];
+
+        var directLaunchables = Directory.EnumerateFiles(toolDir)
+            .Where(IsLaunchable)
+            .ToList();
+
+        var match = directLaunchables.FirstOrDefault(f =>
+            Path.GetFileNameWithoutExtension(f).Equals(dirName, StringComparison.OrdinalIgnoreCase));
+
+        if (match is not null)
+            return match;
+
+        match = directLaunchables.FirstOrDefault(f =>
+            StripArchSuffix(Path.GetFileNameWithoutExtension(f))
+                .Equals(StripArchSuffix(dirName), StringComparison.OrdinalIgnoreCase));
+
+        if (match is not null)
+            return match;
+
+        match = allLaunchables.FirstOrDefault(f =>
+            Path.GetFileNameWithoutExtension(f).Equals(dirName, StringComparison.OrdinalIgnoreCase));
+
+        if (match is not null)
+            return match;
+
+        match = allLaunchables.FirstOrDefault(f =>
+            StripArchSuffix(Path.GetFileNameWithoutExtension(f))
+                .Equals(StripArchSuffix(dirName), StringComparison.OrdinalIgnoreCase));
+
+        if (match is not null)
+            return match;
+
+        if (directLaunchables.Count > 0)
+            return directLaunchables[0];
+
+        return allLaunchables[0];
+    }
+
+    private static string StripArchSuffix(string name)
+    {
+        foreach (var suffix in ArchSuffixes)
+        {
+            if (name.EndsWith(suffix, StringComparison.OrdinalIgnoreCase))
+            {
+                return name[..^suffix.Length];
+            }
+        }
+
+        return name;
     }
 
     private static string CleanupName(string name)
@@ -142,6 +215,12 @@ public static class ToolCatalog
 
         var parentName = Directory.GetParent(path)?.Name;
         return string.IsNullOrWhiteSpace(parentName) ? fileName : parentName;
+    }
+
+    private static string CreatePlaceholderPath(string toolDir)
+    {
+        var dirName = Path.GetFileName(toolDir);
+        return Path.Combine(toolDir, dirName + ".exe");
     }
 
     private static string FindToolsRoot()

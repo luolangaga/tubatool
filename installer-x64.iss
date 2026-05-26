@@ -1,5 +1,5 @@
 #define MyAppName "图吧工具箱winui3"
-#define MyAppVersion "1.0.1"
+#define MyAppVersion "1.0.2"
 #define MyAppPublisher "罗澜嘎嘎"
 #define MyAppExeName "TubaWinUi3.exe"
 #define MyAppCopyright "Copyright (C) 2025 罗澜嘎嘎"

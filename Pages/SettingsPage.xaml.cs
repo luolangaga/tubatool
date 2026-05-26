@@ -8,6 +8,8 @@ namespace TubaWinUi3.Pages;
 
 public sealed partial class SettingsPage : Page
 {
+    private bool _isCheckingUpdate;
+
     public SettingsPage()
     {
         InitializeComponent();
@@ -56,6 +58,44 @@ public sealed partial class SettingsPage : Page
             _ => AppTheme.Default
         };
         ThemeService.SetTheme(theme);
+    }
+
+    private async void CheckUpdateButton_Click(object sender, RoutedEventArgs e)
+    {
+        if (_isCheckingUpdate) return;
+        _isCheckingUpdate = true;
+        CheckUpdateButton.IsEnabled = false;
+        UpdateStatusText.Text = "正在检查更新...";
+
+        try
+        {
+            var update = await UpdateService.CheckForUpdateAsync();
+
+            if (update is not null)
+            {
+                UpdateStatusText.Text = $"发现新版本 v{update.Version}";
+                var dialog = new UpdateDialog();
+                await dialog.ShowUpdateAsync(update);
+
+                if (dialog.SkipThisVersion)
+                    UpdateStatusText.Text = $"已跳过 v{update.Version}";
+                else
+                    UpdateStatusText.Text = "点击检查是否有新版本";
+            }
+            else
+            {
+                UpdateStatusText.Text = "已是最新版本";
+            }
+        }
+        catch (Exception ex)
+        {
+            UpdateStatusText.Text = $"检查失败: {ex.Message}";
+        }
+        finally
+        {
+            _isCheckingUpdate = false;
+            CheckUpdateButton.IsEnabled = true;
+        }
     }
 
     private void ThrowErrorButton_Click(object sender, RoutedEventArgs e)

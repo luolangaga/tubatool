@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentDialog
+    x:Class="TubaWinUi3.Pages.ToolDownloadDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    PrimaryButtonText="开始下载"
+    CloseButtonText="取消"
+    DefaultButton="Primary"
+    PrimaryButtonClick="OnPrimaryButtonClick">
+
+    <ContentDialog.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
+            </ResourceDictionary.MergedDictionaries>
+            <CornerRadius x:Key="DialogCornerRadius">12</CornerRadius>
+        </ResourceDictionary>
+    </ContentDialog.Resources>
+
+    <Grid RowSpacing="14" MinWidth="420">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Border
+            Padding="18,14"
+            Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+            BorderThickness="1"
+            CornerRadius="10">
+            <Grid ColumnSpacing="14">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Border
+                    Width="48"
+                    Height="48"
+                    Background="{ThemeResource AccentFillColorDefaultBrush}"
+                    CornerRadius="12">
+                    <FontIcon
+                        x:Name="ToolIcon"
+                        FontSize="24"
+                        Foreground="{ThemeResource TextOnAccentFillColorPrimaryBrush}"
+                        Glyph="&#xE896;" />
+                </Border>
+
+                <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="3">
+                    <TextBlock
+                        x:Name="ToolNameText"
+                        FontSize="18"
+                        FontWeight="SemiBold" />
+                    <TextBlock
+                        x:Name="ToolDescText"
+                        FontSize="12"
+                        Opacity="0.68"
+                        TextWrapping="Wrap"
+                        MaxLines="2" />
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <StackPanel
+            x:Name="ResolvingSection"
+            Grid.Row="1"
+            Spacing="8"
+            Visibility="Collapsed">
+            <StackPanel Orientation="Horizontal" Spacing="8">
+                <ProgressRing Width="18" Height="18" IsActive="True" />
+                <TextBlock FontSize="13" Opacity="0.72" Text="正在解析最新版下载地址..." />
+            </StackPanel>
+        </StackPanel>
+
+        <StackPanel
+            x:Name="ProgressSection"
+            Grid.Row="2"
+            Spacing="10"
+            Visibility="Collapsed">
+
+            <ProgressBar
+                x:Name="DownloadProgressBar"
+                IsIndeterminate="False"
+                ShowError="False"
+                ShowPaused="False" />
+
+            <Grid ColumnSpacing="12">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Orientation="Horizontal" Spacing="16">
+                    <StackPanel Orientation="Horizontal" Spacing="4">
+                        <FontIcon FontSize="11" Glyph="&#xE921;" Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                        <TextBlock
+                            x:Name="SpeedText"
+                            FontSize="12"
+                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                            Text="--" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Spacing="4">
+                        <FontIcon FontSize="11" Glyph="&#xE8B7;" Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                        <TextBlock
+                            x:Name="SizeText"
+                            FontSize="12"
+                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                            Text="--" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Spacing="4">
+                        <FontIcon FontSize="11" Glyph="&#xE917;" Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                        <TextBlock
+                            x:Name="TimeText"
+                            FontSize="12"
+                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                            Text="--" />
+                    </StackPanel>
+                </StackPanel>
+
+                <TextBlock
+                    x:Name="PercentText"
+                    Grid.Column="1"
+                    FontSize="12"
+                    FontWeight="SemiBold"
+                    Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
+                    Text="0%" />
+            </Grid>
+        </StackPanel>
+
+        <InfoBar
+            x:Name="ErrorBar"
+            Grid.Row="3"
+            IsOpen="False"
+            IsClosable="True"
+            Severity="Error"
+            Title="下载失败" />
+
+    </Grid>
+</ContentDialog>

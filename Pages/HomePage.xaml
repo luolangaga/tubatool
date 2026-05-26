@@ -10,6 +10,7 @@
 
     <Page.Resources>
         <local:FavGlyphConverter x:Key="FavGlyphConverter" />
+        <local:InvertBoolToVisibilityConverter x:Key="InvertBoolToVis" />
         <Style x:Key="ToolCardStyle" TargetType="GridViewItem">
             <Setter Property="MinWidth" Value="236" />
             <Setter Property="MaxWidth" Value="300" />
@@ -203,7 +204,8 @@
                                             HorizontalAlignment="Right"
                                             Padding="10,4"
                                             Click="RunAsAdminButton_Click"
-                                            ToolTipService.ToolTip="以管理员身份运行">
+                                            ToolTipService.ToolTip="以管理员身份运行"
+                                            Visibility="{Binding NeedsDownload, Converter={StaticResource InvertBoolToVis}}">
                                             <StackPanel Orientation="Horizontal" Spacing="6">
                                                 <FontIcon FontSize="12" Glyph="&#xE7EF;" />
                                                 <TextBlock FontSize="12" Text="管理员" />
@@ -214,7 +216,7 @@
                                             HorizontalAlignment="Right"
                                             Padding="10,4"
                                             Click="LaunchButton_Click"
-                                            Content="打开" />
+                                            Content="{Binding LaunchButtonText}" />
                                     </Grid>
                                 </Grid>
                             </Border>

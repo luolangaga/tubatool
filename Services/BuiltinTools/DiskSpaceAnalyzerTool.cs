@@ -91,24 +91,27 @@ file sealed class AnalyzerPage : Page
     private TNode? _hoveredNode;
     private bool _isEditingBc;
 
-    private static readonly SolidColorBrush NormalBorder = new(Color.FromArgb(40, 0, 0, 0));
-    private static readonly SolidColorBrush HoverBorder = new(Color.FromArgb(230, 255, 255, 255));
-    private static readonly SolidColorBrush TipBg = new(Color.FromArgb(235, 40, 40, 40));
-    private static readonly SolidColorBrush TipBorder = new(Color.FromArgb(255, 100, 100, 100));
-    private static readonly SolidColorBrush TipFg = new(Color.FromArgb(255, 255, 255, 255));
-    private static readonly SolidColorBrush CanvasBg = new(Color.FromArgb(255, 20, 20, 20));
-    private static readonly SolidColorBrush LabelMain = new(Color.FromArgb(235, 255, 255, 255));
-    private static readonly SolidColorBrush LabelSub = new(Color.FromArgb(175, 255, 255, 255));
-    private static readonly SolidColorBrush FreeSpaceBg = new(Color.FromArgb(255, 45, 45, 48));
-    private static readonly SolidColorBrush FreeSpaceLabel = new(Color.FromArgb(160, 255, 255, 255));
+    private static readonly SolidColorBrush NormalBorder = new(Color.FromArgb(30, 0, 0, 0));
+    private static readonly SolidColorBrush HoverBorder = new(Color.FromArgb(220, 255, 255, 255));
+    private static readonly SolidColorBrush TipBg = new(Color.FromArgb(240, 32, 32, 36));
+    private static readonly SolidColorBrush TipBorder = new(Color.FromArgb(255, 70, 70, 76));
+    private static readonly SolidColorBrush TipFg = new(Color.FromArgb(255, 240, 240, 245));
+    private static readonly SolidColorBrush CanvasBg = new(Color.FromArgb(255, 28, 28, 32));
+    private static readonly SolidColorBrush LabelMain = new(Color.FromArgb(240, 255, 255, 255));
+    private static readonly SolidColorBrush LabelSub = new(Color.FromArgb(170, 255, 255, 255));
+    private static readonly SolidColorBrush FreeSpaceBg = new(Color.FromArgb(255, 40, 40, 44));
+    private static readonly SolidColorBrush FreeSpaceLabel = new(Color.FromArgb(150, 255, 255, 255));
+    private static readonly SolidColorBrush ToolbarBg = new(Color.FromArgb(255, 38, 38, 42));
+    private static readonly SolidColorBrush StatusBg = new(Color.FromArgb(255, 38, 38, 42));
 
     private static readonly Color[] Palette =
     [
-        Color.FromArgb(255, 70, 130, 230), Color.FromArgb(255, 50, 170, 80),
-        Color.FromArgb(255, 230, 70, 55),  Color.FromArgb(255, 245, 185, 10),
-        Color.FromArgb(255, 165, 75, 185), Color.FromArgb(255, 10, 170, 195),
-        Color.FromArgb(255, 250, 110, 65), Color.FromArgb(255, 80, 175, 85),
-        Color.FromArgb(255, 120, 135, 200), Color.FromArgb(255, 250, 165, 40),
+        Color.FromArgb(255, 82, 145, 245), Color.FromArgb(255, 56, 190, 96),
+        Color.FromArgb(255, 240, 82, 68),  Color.FromArgb(255, 250, 196, 28),
+        Color.FromArgb(255, 178, 88, 200), Color.FromArgb(255, 18, 188, 212),
+        Color.FromArgb(255, 255, 124, 76), Color.FromArgb(255, 92, 196, 104),
+        Color.FromArgb(255, 136, 148, 220), Color.FromArgb(255, 255, 180, 56),
+        Color.FromArgb(255, 100, 200, 160), Color.FromArgb(255, 200, 120, 180),
     ];
 
     public AnalyzerPage(string path, Window win)
@@ -136,7 +139,13 @@ file sealed class AnalyzerPage : Page
 
     private void InitUi()
     {
-        var bk = new Button { Content = new FontIcon { Glyph = "\uE72B", FontSize = 14 }, Padding = new Thickness(8, 4, 8, 4), VerticalAlignment = VerticalAlignment.Center };
+        var bk = new Button
+        {
+            Content = new FontIcon { Glyph = "\uE72B", FontSize = 14 },
+            Padding = new Thickness(8, 4, 8, 4),
+            VerticalAlignment = VerticalAlignment.Center,
+            CornerRadius = new CornerRadius(6),
+        };
         bk.Click += (_, _) => GoBack();
 
         _bcPanel = new StackPanel { Orientation = Orientation.Horizontal, Spacing = 2, VerticalAlignment = VerticalAlignment.Center };
@@ -146,6 +155,7 @@ file sealed class AnalyzerPage : Page
             Visibility = Visibility.Collapsed,
             VerticalAlignment = VerticalAlignment.Center,
             Padding = new Thickness(6, 2, 6, 2),
+            CornerRadius = new CornerRadius(4),
         };
         _bcEdit.KeyDown += BcEdit_KeyDown;
         _bcEdit.LostFocus += BcEdit_LostFocus;
@@ -158,10 +168,22 @@ file sealed class AnalyzerPage : Page
 
         _bcPanel.PointerPressed += BcPanel_PointerPressed;
 
-        var rf = new Button { Content = new FontIcon { Glyph = "\uE72C", FontSize = 14 }, Padding = new Thickness(8, 4, 8, 4), VerticalAlignment = VerticalAlignment.Center };
+        var rf = new Button
+        {
+            Content = new FontIcon { Glyph = "\uE72C", FontSize = 14 },
+            Padding = new Thickness(8, 4, 8, 4),
+            VerticalAlignment = VerticalAlignment.Center,
+            CornerRadius = new CornerRadius(6),
+        };
         rf.Click += (_, _) => { if (_cur != null) _ = ScanAsync(_cur.Path, true); };
 
-        var top = new Grid { ColumnSpacing = 8, Padding = new Thickness(12, 8, 12, 4) };
+        var top = new Grid
+        {
+            ColumnSpacing = 10,
+            Padding = new Thickness(14, 10, 14, 8),
+            Background = ToolbarBg,
+            CornerRadius = new CornerRadius(0),
+        };
         top.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
         top.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
         top.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
@@ -173,11 +195,20 @@ file sealed class AnalyzerPage : Page
         _cv.SizeChanged += (_, _) => Render();
         _cv.PointerPressed += OnPointerPressed;
 
-        _pb = new ProgressBar { IsIndeterminate = true, Visibility = Visibility.Collapsed, Margin = new Thickness(0, 2, 0, 2) };
-        _st = new TextBlock { FontSize = 12, Opacity = 0.7, Padding = new Thickness(12, 2, 12, 4) };
+        _pb = new ProgressBar { IsIndeterminate = true, Visibility = Visibility.Collapsed, Margin = new Thickness(0, 1, 0, 1) };
+        _st = new TextBlock { FontSize = 12, Opacity = 0.6, Padding = new Thickness(14, 6, 14, 8) };
 
-        _tip = new TextBlock { FontSize = 12, Foreground = TipFg };
-        _tipBox = new Border { Background = TipBg, BorderBrush = TipBorder, BorderThickness = new Thickness(1), CornerRadius = new CornerRadius(4), Padding = new Thickness(8, 5, 8, 5), Child = _tip, Visibility = Visibility.Collapsed };
+        _tip = new TextBlock { FontSize = 12.5, Foreground = TipFg };
+        _tipBox = new Border
+        {
+            Background = TipBg,
+            BorderBrush = TipBorder,
+            BorderThickness = new Thickness(1),
+            CornerRadius = new CornerRadius(6),
+            Padding = new Thickness(10, 6, 10, 6),
+            Child = _tip,
+            Visibility = Visibility.Collapsed,
+        };
 
         _ctxMenu = new MenuFlyout();
         var openItem = new MenuFlyoutItem { Text = "打开文件夹", Icon = new FontIcon { Glyph = "\uE8E5" } };
@@ -201,7 +232,10 @@ file sealed class AnalyzerPage : Page
         g.Children.Add(top);
         Grid.SetRow(_pb, 1); g.Children.Add(_pb);
         Grid.SetRow(wrap, 2); g.Children.Add(wrap);
-        Grid.SetRow(_st, 3); g.Children.Add(_st);
+
+        var statusBorder = new Border { Background = StatusBg, Child = _st, Padding = new Thickness(0) };
+        Grid.SetRow(statusBorder, 3); g.Children.Add(statusBorder);
+
         Content = g;
     }
 
@@ -451,16 +485,39 @@ file sealed class AnalyzerPage : Page
         var pos = e.GetCurrentPoint(_cv).Position;
         var node = FindNodeAt(pos);
 
-        if (node != _hoveredNode)
-        {
-            _hoveredNode = node;
-
-            foreach (var c in _cv.Children)
+            if (node != _hoveredNode)
             {
-                if (c is not Border b) continue;
-                if (b.Tag == node) { b.BorderBrush = HoverBorder; b.BorderThickness = new Thickness(1.5); }
-                else { b.BorderBrush = NormalBorder; b.BorderThickness = new Thickness(0.5); }
-            }
+                _hoveredNode = node;
+
+                foreach (var c in _cv.Children)
+                {
+                    if (c is not Border b) continue;
+                    if (b.Tag == node)
+                    {
+                        b.BorderBrush = HoverBorder;
+                        b.BorderThickness = new Thickness(1.5);
+                        b.CornerRadius = new CornerRadius(4);
+                        if (b.Background is SolidColorBrush sb && b.Tag is TNode)
+                        {
+                            var bc = sb.Color;
+                            b.Background = new SolidColorBrush(Color.FromArgb(bc.A, (byte)Math.Min(255, bc.R + 18), (byte)Math.Min(255, bc.G + 18), (byte)Math.Min(255, bc.B + 18)));
+                        }
+                    }
+                    else
+                    {
+                        b.BorderBrush = NormalBorder;
+                        b.BorderThickness = new Thickness(0.5);
+                        b.CornerRadius = new CornerRadius(4);
+                        if (b.Tag is TNode tn)
+                        {
+                            b.Background = new SolidColorBrush(NodeColor(tn));
+                        }
+                        else if (b.Background is SolidColorBrush sb2)
+                        {
+                            b.Background = new SolidColorBrush(FreeSpaceBg.Color);
+                        }
+                    }
+                }
 
             if (node != null)
             {
@@ -583,11 +640,12 @@ file sealed class AnalyzerPage : Page
         var H = _cv.ActualHeight;
         if (W <= 0 || H <= 0) return;
 
-        const double gap = 2;
+        const double gap = 3;
 
         var totalSize = _cur.Size;
-        var freeSize = _diskTotal > 0 ? Math.Max(0, _diskFree) : 0;
-        if (_cur == _root && _diskTotal > 0)
+        var freeSize = 0L;
+        var showFree = _cur == _root && _diskTotal > 0;
+        if (showFree)
         {
             totalSize = _diskTotal;
             freeSize = Math.Max(0, _diskTotal - _cur.Size);
@@ -597,7 +655,7 @@ file sealed class AnalyzerPage : Page
 
         var items = new List<(TNode? Node, double Ratio)>();
         foreach (var c in _cur.Children) items.Add((c, (double)c.Size / totalSize));
-        if (freeSize > 0) items.Add((null, (double)freeSize / totalSize));
+        if (showFree && freeSize > 0) items.Add((null, (double)freeSize / totalSize));
         if (items.Count == 0) return;
 
         var rects = DoSquarifyEx(items, new Rect(gap, gap, W - gap * 2, H - gap * 2));
@@ -611,42 +669,69 @@ file sealed class AnalyzerPage : Page
             if (rect.Width < 1.5 || rect.Height < 1.5) continue;
 
             var isFree = node == null;
-            var color = isFree ? Color.FromArgb(255, 45, 45, 48) : NodeColor(node!);
+            var color = isFree ? Color.FromArgb(255, 40, 40, 44) : NodeColor(node!);
             var brd = new Border
             {
                 Tag = isFree ? null : node!,
                 Background = new SolidColorBrush(color),
                 BorderBrush = NormalBorder,
-                BorderThickness = new Thickness(0.5)
+                BorderThickness = new Thickness(0.5),
+                CornerRadius = new CornerRadius(4),
             };
 
-            var big = rect.Width > 70 && rect.Height > 36;
-            var med = rect.Width > 44 && rect.Height > 22;
+            var big = rect.Width > 80 && rect.Height > 42;
+            var med = rect.Width > 50 && rect.Height > 26;
 
             if (med)
             {
-                var sp = new StackPanel { Margin = new Thickness(3, 2, 3, 2) };
+                var sp = new StackPanel { Margin = new Thickness(5, 3, 5, 3) };
                 if (isFree)
                 {
-                    sp.Children.Add(new TextBlock { Text = "空闲空间", FontSize = big ? 12 : 10, Foreground = FreeSpaceLabel, TextTrimming = TextTrimming.CharacterEllipsis, TextWrapping = TextWrapping.NoWrap });
-                    if (big) sp.Children.Add(new TextBlock { Text = DiskSpaceAnalyzerTool.Fmt(freeSize), FontSize = 10, Foreground = FreeSpaceLabel });
+                    sp.Children.Add(new TextBlock { Text = "空闲空间", FontSize = big ? 13 : 10, Foreground = FreeSpaceLabel, TextTrimming = TextTrimming.CharacterEllipsis, TextWrapping = TextWrapping.NoWrap });
+                    if (big) sp.Children.Add(new TextBlock { Text = DiskSpaceAnalyzerTool.Fmt(freeSize), FontSize = 11, Foreground = FreeSpaceLabel });
                 }
                 else
                 {
-                    sp.Children.Add(new TextBlock { Text = node!.Name, FontSize = big ? 12 : 10, Foreground = LabelMain, TextTrimming = TextTrimming.CharacterEllipsis, TextWrapping = TextWrapping.NoWrap });
-                    sp.Children.Add(new TextBlock { Text = DiskSpaceAnalyzerTool.Fmt(node.Size), FontSize = big ? 10 : 9, Foreground = LabelSub });
+                    sp.Children.Add(new TextBlock { Text = node!.Name, FontSize = big ? 13 : 10, Foreground = LabelMain, TextTrimming = TextTrimming.CharacterEllipsis, TextWrapping = TextWrapping.NoWrap });
+                    sp.Children.Add(new TextBlock { Text = DiskSpaceAnalyzerTool.Fmt(node.Size), FontSize = big ? 11 : 9, Foreground = LabelSub });
                 }
                 brd.Child = sp;
             }
 
             if (animate)
             {
-                Canvas.SetLeft(brd, ox);
-                Canvas.SetTop(brd, oy);
-                brd.Width = 0;
-                brd.Height = 0;
-                brd.Tag = isFree ? new AnimState { Node = null, StartX = ox, StartY = oy, TargetX = rect.X, TargetY = rect.Y, StartW = 0, StartH = 0, TargetW = rect.Width, TargetH = rect.Height }
-                                 : new AnimState { Node = node!, StartX = ox, StartY = oy, TargetX = rect.X, TargetY = rect.Y, StartW = 0, StartH = 0, TargetW = rect.Width, TargetH = rect.Height };
+                double sx, sy, sw, sh;
+                if (originRect.HasValue)
+                {
+                    sx = originRect.Value.X;
+                    sy = originRect.Value.Y;
+                    sw = originRect.Value.Width;
+                    sh = originRect.Value.Height;
+                    var cx = sx + sw / 2;
+                    var cy = sy + sh / 2;
+                    var blend = 0.15;
+                    sx = cx - (cx - rect.X) * blend;
+                    sy = cy - (cy - rect.Y) * blend;
+                    sw = rect.Width * blend;
+                    sh = rect.Height * blend;
+                }
+                else
+                {
+                    var cx = W / 2;
+                    var cy = H / 2;
+                    var blend = 0.25;
+                    sx = cx - (cx - rect.X) * blend;
+                    sy = cy - (cy - rect.Y) * blend;
+                    sw = rect.Width * blend;
+                    sh = rect.Height * blend;
+                }
+                Canvas.SetLeft(brd, sx);
+                Canvas.SetTop(brd, sy);
+                brd.Width = sw;
+                brd.Height = sh;
+                brd.Opacity = 0.3;
+                brd.Tag = isFree ? new AnimState { Node = null, StartX = sx, StartY = sy, TargetX = rect.X, TargetY = rect.Y, StartW = sw, StartH = sh, TargetW = rect.Width, TargetH = rect.Height }
+                                 : new AnimState { Node = node!, StartX = sx, StartY = sy, TargetX = rect.X, TargetY = rect.Y, StartW = sw, StartH = sh, TargetW = rect.Width, TargetH = rect.Height };
             }
             else
             {
@@ -664,7 +749,7 @@ file sealed class AnalyzerPage : Page
 
     private void RunZoomAnimation()
     {
-        const int steps = 18;
+        const int steps = 28;
         const int intervalMs = 16;
         var step = 0;
         var borders = _cv.Children.OfType<Border>().Where(b => b.Tag is AnimState).ToList();
@@ -674,7 +759,9 @@ file sealed class AnalyzerPage : Page
         {
             step++;
             var t = (double)step / steps;
-            var eased = t < 0.5 ? 2 * t * t : 1 - Math.Pow(-2 * t + 2, 2) / 2;
+            var eased = t < 0.5
+                ? 4 * t * t * t
+                : 1 - Math.Pow(-2 * t + 2, 3) / 2;
 
             foreach (var b in borders)
             {
@@ -683,12 +770,17 @@ file sealed class AnalyzerPage : Page
                 Canvas.SetTop(b, s.StartY + (s.TargetY - s.StartY) * eased);
                 b.Width = s.StartW + (s.TargetW - s.StartW) * eased;
                 b.Height = s.StartH + (s.TargetH - s.StartH) * eased;
+                b.Opacity = 0.3 + 0.7 * eased;
             }
 
             if (step >= steps)
             {
                 timer.Stop();
-                foreach (var b in borders) b.Tag = ((AnimState)b.Tag!).Node;
+                foreach (var b in borders)
+                {
+                    b.Tag = ((AnimState)b.Tag!).Node;
+                    b.Opacity = 1.0;
+                }
             }
         };
         timer.Start();
@@ -779,7 +871,7 @@ file sealed class AnalyzerPage : Page
         foreach (var c in node.Name) h = (h * 31 + c) & 0x7FFFFFFF;
         var baseC = Palette[h % Palette.Length];
         var sf = Math.Min(1.0, Math.Log10(Math.Max(node.Size, 1)) / 10.5);
-        var br = 0.38 + sf * 0.62;
+        var br = 0.42 + sf * 0.58;
         return Color.FromArgb(255, (byte)Math.Clamp(baseC.R * br, 0, 255), (byte)Math.Clamp(baseC.G * br, 0, 255), (byte)Math.Clamp(baseC.B * br, 0, 255));
     }
 }

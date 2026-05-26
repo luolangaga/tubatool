@@ -4,6 +4,7 @@ using Microsoft.UI.Xaml.Navigation;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using TubaWinUi3.Models;
+using TubaWinUi3.Pages;
 using TubaWinUi3.Services;
 
 namespace TubaWinUi3.Pages;
@@ -225,6 +226,12 @@ public sealed partial class HomePage : Page
 
     private void LaunchTool(ToolItem tool, bool runAsAdmin)
     {
+        if (!string.IsNullOrWhiteSpace(tool.DownloadUrl))
+        {
+            _ = ShowDownloadDialogAsync(tool);
+            return;
+        }
+
         try
         {
             Process.Start(new ProcessStartInfo
@@ -240,6 +247,26 @@ public sealed partial class HomePage : Page
         catch (Exception ex)
         {
             ShowStatus("启动失败", ex.Message, InfoBarSeverity.Error);
+        }
+    }
+
+    private async Task ShowDownloadDialogAsync(ToolItem tool)
+    {
+        var toolDir = Path.GetDirectoryName(tool.Path) ?? Path.Combine(ToolCatalog.ToolsRoot, tool.Category, tool.Folder);
+        Directory.CreateDirectory(toolDir);
+
+        var dialog = new ToolDownloadDialog(
+            tool.Name,
+            tool.Description ?? "",
+            tool.DownloadUrl!,
+            tool.DownloadFilter,
+            toolDir);
+
+        await dialog.ShowAsync();
+
+        if (dialog.DownloadSucceeded)
+        {
+            ShowStatus("下载完成", $"「{tool.Name}」已下载到工具目录，刷新后可直接打开。", InfoBarSeverity.Success);
         }
     }
 

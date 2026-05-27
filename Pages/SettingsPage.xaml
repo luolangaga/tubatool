@@ -328,141 +328,178 @@
 
                 <TextBlock
                     Style="{StaticResource SectionHeaderStyle}"
+                    Text="链接" />
+
+                <Border Style="{StaticResource SettingsCardStyle}">
+                    <Grid ColumnSpacing="16">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <Border Style="{StaticResource IconBorderStyle}">
+                            <FontIcon FontSize="18" Glyph="&#xE71B;" />
+                        </Border>
+
+                        <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="2">
+                            <TextBlock FontWeight="SemiBold" Text="官方网站" />
+                            <TextBlock
+                                Opacity="0.68"
+                                FontSize="13"
+                                Text="tubawinui3.cn" />
+                        </StackPanel>
+
+                        <HyperlinkButton
+                            Grid.Column="2"
+                            VerticalAlignment="Center"
+                            NavigateUri="https://tubawinui3.cn"
+                            Content="访问官网" />
+                    </Grid>
+                </Border>
+
+                <TextBlock
+                    Style="{StaticResource SectionHeaderStyle}"
                     Text="开源引用" />
 
                 <Border Style="{StaticResource SettingsCardStyle}">
-                    <StackPanel Spacing="2">
-                        <Grid ColumnSpacing="16" Padding="0,2">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
+                    <Grid ColumnSpacing="16">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
 
-                            <Border Style="{StaticResource IconBorderStyle}">
-                                <FontIcon FontSize="18" Glyph="&#xE946;" />
-                            </Border>
+                        <Border Style="{StaticResource IconBorderStyle}">
+                            <FontIcon FontSize="18" Glyph="&#xE946;" />
+                        </Border>
 
+                        <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="2">
+                            <TextBlock FontWeight="SemiBold" Text="Windows App SDK (WinUI 3)" />
                             <TextBlock
-                                Grid.Column="1"
-                                VerticalAlignment="Center"
-                                FontWeight="SemiBold"
-                                Text="开源引用" />
-
-                            <TextBlock
-                                Grid.Column="2"
-                                VerticalAlignment="Center"
-                                Opacity="0.52"
+                                Opacity="0.68"
                                 FontSize="13"
-                                Text="5 个依赖" />
-                        </Grid>
+                                Text="Microsoft.WindowsAppSDK" />
+                        </StackPanel>
 
-                        <Border
-                            Margin="0,10,0,0"
-                            Padding="0,1"
-                            Background="{ThemeResource DividerStrokeColorDefaultBrush}"
-                            CornerRadius="0" />
+                        <HyperlinkButton
+                            Grid.Column="2"
+                            VerticalAlignment="Center"
+                            NavigateUri="https://github.com/microsoft/WindowsAppSDK"
+                            Content="GitHub" />
+                    </Grid>
+                </Border>
 
-                        <Grid ColumnSpacing="14" Padding="0,10,0,2">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-                            <StackPanel Spacing="2">
-                                <TextBlock FontWeight="SemiBold" Text="Windows App SDK (WinUI 3)" />
-                                <TextBlock Opacity="0.62" FontSize="12" Text="Microsoft.WindowsAppSDK" />
-                            </StackPanel>
-                            <HyperlinkButton
-                                VerticalAlignment="Center"
-                                FontSize="12"
-                                NavigateUri="https://github.com/microsoft/WindowsAppSDK"
-                                Content="GitHub" />
-                        </Grid>
+                <Border Style="{StaticResource SettingsCardStyle}">
+                    <Grid ColumnSpacing="16">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
 
-                        <Border
-                            Padding="0,1"
-                            Background="{ThemeResource DividerStrokeColorDefaultBrush}"
-                            CornerRadius="0" />
+                        <Border Style="{StaticResource IconBorderStyle}">
+                            <FontIcon FontSize="18" Glyph="&#xE946;" />
+                        </Border>
 
-                        <Grid ColumnSpacing="14" Padding="0,10,0,2">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-                            <StackPanel Spacing="2">
-                                <TextBlock FontWeight="SemiBold" Text="Win2D" />
-                                <TextBlock Opacity="0.62" FontSize="12" Text="Microsoft.Graphics.Win2D" />
-                            </StackPanel>
-                            <HyperlinkButton
-                                VerticalAlignment="Center"
-                                FontSize="12"
-                                NavigateUri="https://github.com/microsoft/Win2D"
-                                Content="GitHub" />
-                        </Grid>
+                        <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="2">
+                            <TextBlock FontWeight="SemiBold" Text="Win2D" />
+                            <TextBlock
+                                Opacity="0.68"
+                                FontSize="13"
+                                Text="Microsoft.Graphics.Win2D" />
+                        </StackPanel>
 
-                        <Border
-                            Padding="0,1"
-                            Background="{ThemeResource DividerStrokeColorDefaultBrush}"
-                            CornerRadius="0" />
+                        <HyperlinkButton
+                            Grid.Column="2"
+                            VerticalAlignment="Center"
+                            NavigateUri="https://github.com/microsoft/Win2D"
+                            Content="GitHub" />
+                    </Grid>
+                </Border>
 
-                        <Grid ColumnSpacing="14" Padding="0,10,0,2">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-                            <StackPanel Spacing="2">
-                                <TextBlock FontWeight="SemiBold" Text="System.Drawing.Common" />
-                                <TextBlock Opacity="0.62" FontSize="12" Text="图标提取与图像处理" />
-                            </StackPanel>
-                            <HyperlinkButton
-                                VerticalAlignment="Center"
-                                FontSize="12"
-                                NavigateUri="https://learn.microsoft.com/dotnet/core/compatibility/core-libraries/6.0/system-drawing-common-windows-only"
-                                Content="Docs" />
-                        </Grid>
+                <Border Style="{StaticResource SettingsCardStyle}">
+                    <Grid ColumnSpacing="16">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
 
-                        <Border
-                            Padding="0,1"
-                            Background="{ThemeResource DividerStrokeColorDefaultBrush}"
-                            CornerRadius="0" />
+                        <Border Style="{StaticResource IconBorderStyle}">
+                            <FontIcon FontSize="18" Glyph="&#xE946;" />
+                        </Border>
 
-                        <Grid ColumnSpacing="14" Padding="0,10,0,2">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-                            <StackPanel Spacing="2">
-                                <TextBlock FontWeight="SemiBold" Text="System.Management" />
-                                <TextBlock Opacity="0.62" FontSize="12" Text="WMI 硬件信息查询" />
-                            </StackPanel>
-                            <HyperlinkButton
-                                VerticalAlignment="Center"
-                                FontSize="12"
-                                NavigateUri="https://learn.microsoft.com/dotnet/api/system.management"
-                                Content="Docs" />
-                        </Grid>
+                        <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="2">
+                            <TextBlock FontWeight="SemiBold" Text="System.Drawing.Common" />
+                            <TextBlock
+                                Opacity="0.68"
+                                FontSize="13"
+                                Text="图标提取与图像处理" />
+                        </StackPanel>
 
-                        <Border
-                            Padding="0,1"
-                            Background="{ThemeResource DividerStrokeColorDefaultBrush}"
-                            CornerRadius="0" />
+                        <HyperlinkButton
+                            Grid.Column="2"
+                            VerticalAlignment="Center"
+                            NavigateUri="https://learn.microsoft.com/dotnet/core/compatibility/core-libraries/6.0/system-drawing-common-windows-only"
+                            Content="Docs" />
+                    </Grid>
+                </Border>
 
-                        <Grid ColumnSpacing="14" Padding="0,10,0,2">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-                            <StackPanel Spacing="2">
-                                <TextBlock FontWeight="SemiBold" Text="Microsoft.Windows.SDK.BuildTools" />
-                                <TextBlock Opacity="0.62" FontSize="12" Text="Windows SDK 构建工具" />
-                            </StackPanel>
-                            <HyperlinkButton
-                                VerticalAlignment="Center"
-                                FontSize="12"
-                                NavigateUri="https://www.nuget.org/packages/Microsoft.Windows.SDK.BuildTools"
-                                Content="NuGet" />
-                        </Grid>
-                    </StackPanel>
+                <Border Style="{StaticResource SettingsCardStyle}">
+                    <Grid ColumnSpacing="16">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <Border Style="{StaticResource IconBorderStyle}">
+                            <FontIcon FontSize="18" Glyph="&#xE946;" />
+                        </Border>
+
+                        <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="2">
+                            <TextBlock FontWeight="SemiBold" Text="System.Management" />
+                            <TextBlock
+                                Opacity="0.68"
+                                FontSize="13"
+                                Text="WMI 硬件信息查询" />
+                        </StackPanel>
+
+                        <HyperlinkButton
+                            Grid.Column="2"
+                            VerticalAlignment="Center"
+                            NavigateUri="https://learn.microsoft.com/dotnet/api/system.management"
+                            Content="Docs" />
+                    </Grid>
+                </Border>
+
+                <Border Style="{StaticResource SettingsCardStyle}">
+                    <Grid ColumnSpacing="16">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <Border Style="{StaticResource IconBorderStyle}">
+                            <FontIcon FontSize="18" Glyph="&#xE946;" />
+                        </Border>
+
+                        <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="2">
+                            <TextBlock FontWeight="SemiBold" Text="Microsoft.Windows.SDK.BuildTools" />
+                            <TextBlock
+                                Opacity="0.68"
+                                FontSize="13"
+                                Text="Windows SDK 构建工具" />
+                        </StackPanel>
+
+                        <HyperlinkButton
+                            Grid.Column="2"
+                            VerticalAlignment="Center"
+                            NavigateUri="https://www.nuget.org/packages/Microsoft.Windows.SDK.BuildTools"
+                            Content="NuGet" />
+                    </Grid>
                 </Border>
 
                 <TextBlock

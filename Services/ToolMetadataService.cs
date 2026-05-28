@@ -11,6 +11,8 @@ public sealed record ToolMetadata(
     string? DownloadUrl,
     string? DownloadFilter);
 
+public sealed record JsonArchVariantResult(string? File, string? Dir, string? Arch);
+
 public static class ToolMetadataService
 {
     private static IReadOnlyList<JsonToolMetadata>? _metadata;
@@ -50,6 +52,17 @@ public static class ToolMetadataService
             jsonMetadata is null ? null : "JSON",
             jsonMetadata?.DownloadUrl,
             jsonMetadata?.DownloadFilter);
+    }
+
+    public static IReadOnlyList<JsonArchVariantResult> GetArchVariants(string toolPath)
+    {
+        var jsonMetadata = FindJsonMetadata(toolPath);
+        if (jsonMetadata?.ArchVariants is null || jsonMetadata.ArchVariants.Count == 0)
+            return [];
+
+        return jsonMetadata.ArchVariants
+            .Select(v => new JsonArchVariantResult(v.File, v.Dir, v.Arch))
+            .ToList();
     }
 
     private static JsonToolMetadata? FindJsonMetadata(string toolPath)
@@ -160,5 +173,16 @@ public static class ToolMetadataService
         public string? DownloadUrl { get; set; }
 
         public string? DownloadFilter { get; set; }
+
+        public List<JsonArchVariant>? ArchVariants { get; set; }
+    }
+
+    private sealed class JsonArchVariant
+    {
+        public string? File { get; set; }
+
+        public string? Dir { get; set; }
+
+        public string? Arch { get; set; }
     }
 }

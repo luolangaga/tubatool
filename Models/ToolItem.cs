@@ -34,5 +34,28 @@ public sealed class ToolItem
 
     public bool NeedsDownload => !string.IsNullOrWhiteSpace(DownloadUrl);
 
-    public string LaunchButtonText => NeedsDownload ? "下载" : "打开";
+    public string? PrimaryArch { get; init; }
+
+    public IReadOnlyList<ArchVariant> AlternateVersions { get; init; } = [];
+
+    public bool HasAlternateVersions => AlternateVersions.Count > 0;
+
+    public string LaunchButtonText
+    {
+        get
+        {
+            if (NeedsDownload)
+                return "下载";
+            if (PrimaryArch is not null)
+                return $"打开（{PrimaryArch}）";
+            return "打开";
+        }
+    }
+}
+
+public sealed class ArchVariant
+{
+    public required string Name { get; init; }
+    public required string Path { get; init; }
+    public required string Arch { get; init; }
 }

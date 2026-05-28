@@ -51,9 +51,11 @@ public static class HardwareInfoService
 
     private static void FillDetails(HardwareInfoSection section)
     {
+        section.Items.Add(Item("主板", BoardModel()));
         section.Items.Add(Item("处理器", FirstName("Win32_Processor")));
         section.Items.Add(Item("内存", FormatMemory()));
-        section.Items.Add(Item("显卡", JoinNames("Win32_VideoController")));
+        section.Items.Add(Item("显卡", JoinNames("Win32_VideoController", item =>
+            !ContainsAny(Get(item, "Name"), "Microsoft Basic Render", "Microsoft Remote Display", "DDA Wrapper"))));
         section.Items.Add(Item("显示器", FormatDisplays()));
         section.Items.Add(Item("硬盘", FormatDisks()));
         section.Items.Add(Item("声卡", JoinNames("Win32_SoundDevice")));
@@ -229,6 +231,12 @@ public static class HardwareInfoService
     private static string FirstName(string className)
     {
         return Query(className).Select(item => Get(item, "Name")).FirstOrDefault(value => !string.IsNullOrWhiteSpace(value)) ?? "未知";
+    }
+
+    private static string BoardModel()
+    {
+        var board = First("Win32_BaseBoard");
+        return Join(Get(board, "Manufacturer"), Get(board, "Product"));
     }
 
     private static string JoinNames(string className, Func<ManagementBaseObject, bool>? filter = null)

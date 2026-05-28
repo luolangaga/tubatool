@@ -12,6 +12,8 @@
         <local:FavGlyphConverter x:Key="FavGlyphConverter" />
         <local:InvertBoolToVisibilityConverter x:Key="InvertBoolToVis" />
         <local:NullToVisibilityConverter x:Key="NullToCollapse" />
+        <local:HasAlternatesToVisibilityConverter x:Key="HasAlternatesToVis" />
+        <local:NoAlternatesToVisibilityConverter x:Key="NoAlternatesToVis" />
         <Style x:Key="ToolCardStyle" TargetType="GridViewItem">
             <Setter Property="MinWidth" Value="236" />
             <Setter Property="MaxWidth" Value="300" />
@@ -227,12 +229,25 @@
                                                 <TextBlock FontSize="12" Text="管理员" />
                                             </StackPanel>
                                         </Button>
+                                        <SplitButton
+                                            Grid.Column="3"
+                                            HorizontalAlignment="Right"
+                                            Padding="10,4"
+                                            Click="LaunchSplitButton_Click"
+                                            Content="{Binding LaunchButtonText}"
+                                            Loaded="LaunchSplitButton_Loaded"
+                                            Visibility="{Binding HasAlternateVersions, Converter={StaticResource HasAlternatesToVis}}">
+                                            <SplitButton.Flyout>
+                                                <MenuFlyout />
+                                            </SplitButton.Flyout>
+                                        </SplitButton>
                                         <Button
                                             Grid.Column="3"
                                             HorizontalAlignment="Right"
                                             Padding="10,4"
                                             Click="LaunchButton_Click"
-                                            Content="{Binding LaunchButtonText}" />
+                                            Content="{Binding LaunchButtonText}"
+                                            Visibility="{Binding HasAlternateVersions, Converter={StaticResource NoAlternatesToVis}}" />
                                     </Grid>
                                 </Grid>
                             </Border>

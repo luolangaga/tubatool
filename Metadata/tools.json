@@ -5,13 +5,21 @@
       "match": "CPU-Z",
       "description": "处理器、主板、内存和显卡基础信息查看工具。",
       "publisher": "CPUID",
-      "tags": [ "CPU", "主板", "硬件检测" ]
+      "tags": [ "CPU", "主板", "硬件检测" ],
+      "archVariants": [
+        { "file": "cpuz_x32.exe", "arch": "x86" },
+        { "file": "cpuz_x64.exe", "arch": "x64" }
+      ]
     },
     {
       "match": "CoreTemp",
       "description": "CPU 温度实时监控工具，支持每个核心独立温度显示和系统托盘通知。",
       "publisher": "ALCPU",
-      "tags": [ "CPU", "温度监控" ]
+      "tags": [ "CPU", "温度监控" ],
+      "archVariants": [
+        { "file": "Core Temp x86.exe", "arch": "x86" },
+        { "file": "Core Temp x64.exe", "arch": "x64" }
+      ]
     },
     {
       "match": "C2CLatency",
@@ -23,7 +31,11 @@
       "match": "LinX",
       "description": "基于 Intel LINPACK 的 CPU 稳定性测试工具，用于极限烤机和超频验证。",
       "publisher": "",
-      "tags": [ "CPU", "烤机", "稳定性测试" ]
+      "tags": [ "CPU", "烤机", "稳定性测试" ],
+      "archVariants": [
+        { "file": "32-bit\\linpack_xeon32.exe", "arch": "x86" },
+        { "file": "64-bit\\linpack_xeon64.exe", "arch": "x64" }
+      ]
     },
     {
       "match": "Prime95",
@@ -77,7 +89,10 @@
       "match": "GpuTest",
       "description": "跨平台 GPU 基准测试工具，支持 OpenGL 压力测试和性能评分。",
       "publisher": "Geeks3D",
-      "tags": [ "显卡", "性能测试" ]
+      "tags": [ "显卡", "性能测试" ],
+      "archVariants": [
+        { "dir": "GpuTest_Windows x64", "arch": "x64" }
+      ]
     },
     {
       "match": "nvidiaInspector",
@@ -107,13 +122,20 @@
       "match": "FurMark",
       "description": "GPU 压力测试和烤机工具（OpenGL），俗称显卡杀手，用于检测显卡稳定性。",
       "publisher": "Geeks3D",
-      "tags": [ "烤机", "显卡", "稳定性测试" ]
+      "tags": [ "烤机", "显卡", "稳定性测试" ],
+      "archVariants": [
+        { "dir": "FurMark_win64", "arch": "x64" }
+      ]
     },
     {
       "match": "CrystalDiskInfo",
       "description": "硬盘 SMART、健康状态、温度和通电时间查看工具。",
       "publisher": "Crystal Dew World",
-      "tags": [ "硬盘", "SMART", "健康检测" ]
+      "tags": [ "硬盘", "SMART", "健康检测" ],
+      "archVariants": [
+        { "file": "DiskInfo32S.exe", "arch": "x86" },
+        { "file": "DiskInfo64S.exe", "arch": "x64" }
+      ]
     },
     {
       "match": "CrystalDiskMark",
@@ -233,7 +255,10 @@
       "match": "memtest",
       "description": "内存稳定性测试工具，通过反复读写检测内存错误。",
       "publisher": "",
-      "tags": [ "内存", "稳定性测试" ]
+      "tags": [ "内存", "稳定性测试" ],
+      "archVariants": [
+        { "dir": "memtest64", "arch": "x64" }
+      ]
     },
     {
       "match": "MemTest64",
@@ -341,13 +366,21 @@
       "match": "HWiNFO",
       "description": "专业硬件信息读取、传感器监控和日志记录工具。",
       "publisher": "REALiX",
-      "tags": [ "综合检测", "传感器" ]
+      "tags": [ "综合检测", "传感器" ],
+      "archVariants": [
+        { "file": "HWiNFO32.exe", "arch": "x86" },
+        { "file": "HWiNFO64.exe", "arch": "x64" }
+      ]
     },
     {
       "match": "HWMonitor",
       "description": "硬件温度、电压和风扇转速监控工具，实时显示传感器数据。",
       "publisher": "CPUID",
-      "tags": [ "综合检测", "温度监控" ]
+      "tags": [ "综合检测", "温度监控" ],
+      "archVariants": [
+        { "file": "HWMonitor_x32.exe", "arch": "x86" },
+        { "file": "HWMonitor_x64.exe", "arch": "x64" }
+      ]
     },
     {
       "match": "RWEverything",
@@ -359,7 +392,10 @@
       "match": "Speccy",
       "description": "系统硬件信息快速查看工具，提供简洁的硬件配置摘要。",
       "publisher": "Piriform",
-      "tags": [ "综合检测", "硬件信息" ]
+      "tags": [ "综合检测", "硬件信息" ],
+      "archVariants": [
+        { "file": "Speccy64.exe", "arch": "x64" }
+      ]
     },
     {
       "match": "LatencyMon",
@@ -443,7 +479,11 @@
       "match": "BlueScreenView",
       "description": "蓝屏崩溃转储分析工具，查看 BSOD 错误代码和导致崩溃的驱动。",
       "publisher": "NirSoft",
-      "tags": [ "系统", "蓝屏分析" ]
+      "tags": [ "系统", "蓝屏分析" ],
+      "archVariants": [
+        { "file": "BlueScreenViewx86.exe", "arch": "x86" },
+        { "file": "BlueScreenViewx64.exe", "arch": "x64" }
+      ]
     },
     {
       "match": "DesktopOK",
@@ -461,7 +501,12 @@
       "match": "Dism++",
       "description": "Windows 系统精简和优化工具，基于 DISM 的图形化系统管理工具。",
       "publisher": "Chuyu Team",
-      "tags": [ "系统", "系统优化", "精简" ]
+      "tags": [ "系统", "系统优化", "精简" ],
+      "archVariants": [
+        { "file": "Dism++x86.exe", "arch": "x86" },
+        { "file": "Dism++x64.exe", "arch": "x64" },
+        { "file": "Dism++ARM64.exe", "arch": "ARM64" }
+      ]
     },
     {
       "match": "Everything",
@@ -582,38 +627,6 @@
       "downloadFilter": "*net*_10_*.zip"
     },
     {
-      "match": "PowerToys",
-      "description": "微软官方系统增强工具集，包含窗口管理、颜色拾取、批量重命名、快捷键指南等实用功能。",
-      "publisher": "Microsoft",
-      "tags": [ "系统", "系统增强", "微软官方" ],
-      "downloadUrl": "gh:microsoft/PowerToys",
-      "downloadFilter": "*UserSetup*x64*.exe"
-    },
-    {
-      "match": "USBDeview",
-      "description": "USB 设备历史记录查看和管理工具，可查看所有曾连接的 USB 设备详情和供电信息。",
-      "publisher": "NirSoft",
-      "tags": [ "USB", "设备管理", "硬件检测" ]
-    },
-    {
-      "match": "USBTreeView",
-      "description": "USB 控制器拓扑结构查看工具，以树状图展示 USB 控制器、集线器和设备层级关系。",
-      "publisher": "Uwe Sieber",
-      "tags": [ "USB", "拓扑", "硬件检测" ]
-    },
-    {
-      "match": "RAMMap",
-      "description": "物理内存分配详细查看工具，以多种视图展示内存使用、缓存和进程占用。",
-      "publisher": "Sysinternals",
-      "tags": [ "内存", "内存分析", "系统工具" ]
-    },
-    {
-      "match": "Autoruns",
-      "description": "开机启动项和自注册管理工具，可管理所有自启动位置包括驱动、服务和计划任务。",
-      "publisher": "Sysinternals",
-      "tags": [ "系统", "启动项", "系统优化" ]
-    },
-{
       "match": "PowerToys",
       "description": "微软官方系统增强工具集，包含窗口管理、颜色拾取、批量重命名、快捷键指南等实用功能。",
       "publisher": "Microsoft",

@@ -68,9 +68,63 @@ public sealed partial class HomePage : Page
 
     private void LaunchButton_Click(object sender, RoutedEventArgs e)
     {
-        if (sender is Button { DataContext: ToolItem tool })
+        if (sender is Button { DataContext: ToolItem btnTool })
+        {
+            LaunchTool(btnTool, runAsAdmin: false);
+        }
+    }
+
+    private void LaunchSplitButton_Click(SplitButton sender, SplitButtonClickEventArgs e)
+    {
+        if (sender.DataContext is ToolItem tool)
         {
             LaunchTool(tool, runAsAdmin: false);
+        }
+    }
+
+    private void LaunchSplitButton_Loaded(object sender, RoutedEventArgs e)
+    {
+        if (sender is SplitButton splitBtn && splitBtn.DataContext is ToolItem tool)
+        {
+            if (splitBtn.Flyout is MenuFlyout flyout)
+            {
+                flyout.Opening += (s, _) =>
+                {
+                    flyout.Items.Clear();
+                    foreach (var variant in tool.AlternateVersions)
+                    {
+                        var item = new MenuFlyoutItem
+                        {
+                            Text = $"打开（{variant.Arch}）",
+                            DataContext = variant
+                        };
+                        item.Click += AlternateVersion_Click;
+                        flyout.Items.Add(item);
+                    }
+                };
+            }
+        }
+    }
+
+    private void AlternateVersion_Click(object sender, RoutedEventArgs e)
+    {
+        if (sender is MenuFlyoutItem { DataContext: ArchVariant variant })
+        {
+            try
+            {
+                Process.Start(new ProcessStartInfo
+                {
+                    FileName = variant.Path,
+                    WorkingDirectory = Path.GetDirectoryName(variant.Path) ?? ToolCatalog.ToolsRoot,
+                    UseShellExecute = true
+                });
+
+                ShowStatus("已启动", variant.Name, InfoBarSeverity.Success);
+            }
+            catch (Exception ex)
+            {
+                ShowStatus("启动失败", ex.Message, InfoBarSeverity.Error);
+            }
         }
     }
 

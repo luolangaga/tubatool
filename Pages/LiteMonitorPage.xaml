@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Page
+    x:Class="TubaWinUi3.Pages.LiteMonitorPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <ScrollViewer Padding="20,8,20,16">
+        <StackPanel Spacing="12">
+            <InfoBar x:Name="DriverWarning" IsOpen="True" IsClosable="False" Severity="Warning" Title="需要安装驱动" Message="CPU 温度/频率/功耗等数据需要 PawnIO 驱动支持。">
+                <InfoBar.ActionButton>
+                    <Button x:Name="InstallDriverBtn" Content="安装驱动" Click="InstallDriverBtn_Click" />
+                </InfoBar.ActionButton>
+            </InfoBar>
+            <Grid ColumnSpacing="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Border x:Name="CpuCard" />
+                <Border x:Name="GpuCard" Grid.Column="1" />
+            </Grid>
+
+            <Grid ColumnSpacing="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Border x:Name="MemCard" />
+                <Border x:Name="DiskCard" Grid.Column="1" />
+                <Border x:Name="NetCard" Grid.Column="2" />
+            </Grid>
+
+            <Grid ColumnSpacing="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Border x:Name="FpsCard" />
+                <Border x:Name="BatCard" Grid.Column="1" />
+            </Grid>
+
+            <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" CornerRadius="8" Padding="14">
+                <Grid RowSpacing="8" ColumnSpacing="12">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock VerticalAlignment="Center" Opacity="0.68" Text="刷新间隔" />
+                    <ComboBox x:Name="RefreshCombo" MinWidth="80" SelectedIndex="1" Grid.Column="1">
+                        <ComboBoxItem Content="0.5秒" />
+                        <ComboBoxItem Content="1秒" />
+                        <ComboBoxItem Content="2秒" />
+                        <ComboBoxItem Content="5秒" />
+                    </ComboBox>
+                    <CheckBox x:Name="FpsToggle" Content="FPS检测" VerticalAlignment="Center" Grid.Column="2" Click="FpsToggle_Click" />
+
+                    <ComboBox x:Name="FpsProcessCombo" MinWidth="120" VerticalAlignment="Center" Grid.Column="3" PlaceholderText="自动选择进程" SelectionChanged="FpsProcessCombo_SelectionChanged" IsEnabled="False" />
+
+                    <Button x:Name="PopupBtn" Padding="12,6" Content="弹出悬窗" Grid.Column="4" Click="PopupBtn_Click" />
+                    <Button x:Name="PopupSettingsBtn" Padding="8,6" Grid.Column="5" Click="PopupSettingsBtn_Click" ToolTipService.ToolTip="悬窗设置">
+                        <FontIcon FontSize="14" Glyph="&#xE713;" />
+                    </Button>
+                </Grid>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</Page>

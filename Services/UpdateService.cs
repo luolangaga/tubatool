@@ -184,6 +184,48 @@ public static class UpdateService
         }
     }
 
+    private static readonly string _skipVersionFilePath = Path.Combine(
+        Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+        "TubaWinUi3", "skipped_version.txt");
+
+    public static string? GetSkippedVersion()
+    {
+        try
+        {
+            var settings = Windows.Storage.ApplicationData.Current.LocalSettings;
+            return settings.Values["SkippedUpdateVersion"] as string;
+        }
+        catch { }
+
+        try
+        {
+            if (File.Exists(_skipVersionFilePath))
+                return File.ReadAllText(_skipVersionFilePath).Trim();
+        }
+        catch { }
+
+        return null;
+    }
+
+    public static void SetSkippedVersion(string version)
+    {
+        try
+        {
+            var settings = Windows.Storage.ApplicationData.Current.LocalSettings;
+            settings.Values["SkippedUpdateVersion"] = version;
+            return;
+        }
+        catch { }
+
+        try
+        {
+            var dir = Path.GetDirectoryName(_skipVersionFilePath)!;
+            Directory.CreateDirectory(dir);
+            File.WriteAllText(_skipVersionFilePath, version);
+        }
+        catch { }
+    }
+
     public static async Task<List<ProxySpeedResult>> TestProxySpeedsAsync(
         string originalUrl, IProgress<ProxySpeedResult>? progress = null, CancellationToken ct = default)
     {

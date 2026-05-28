@@ -29,6 +29,7 @@ public static class BuiltinToolRegistry
         Register(new SpeedTestTool());
         Register(new WifiPasswordTool());
         Register(new DiskSpaceAnalyzerTool());
+        Register(new LiteMonitorTool());
     }
 
     public static IReadOnlyList<string> GetCategories()

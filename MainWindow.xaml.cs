@@ -60,7 +60,7 @@ public sealed partial class MainWindow : Window
         NavFrame.GoBack();
     }
 
-    private void NavView_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
+    private async void NavView_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
     {
         if (args.IsSettingsSelected)
         {
@@ -81,6 +81,14 @@ public sealed partial class MainWindow : Window
                     break;
                 case "builtin":
                     NavFrame.Navigate(typeof(BuiltinToolsPage));
+                    break;
+                case "monitor":
+                    if (!Services.LiteMonitorService.IsDriverReady())
+                    {
+                        var ok = await Services.LiteMonitorService.Instance.EnsureDriverAsync(Content.XamlRoot);
+                        if (!ok) break;
+                    }
+                    NavFrame.Navigate(typeof(Pages.LiteMonitorPage), false);
                     break;
                 case string category:
                     NavFrame.Navigate(typeof(HomePage), category);

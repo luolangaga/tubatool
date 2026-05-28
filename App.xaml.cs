@@ -38,7 +38,7 @@ public partial class App : Application
             var update = await UpdateService.CheckForUpdateAsync();
             if (update is null) return;
 
-            var skipped = GetSkippedVersion();
+            var skipped = UpdateService.GetSkippedVersion();
             if (skipped == update.Version) return;
 
             if (MainWindow?.DispatcherQueue is null) return;
@@ -49,33 +49,13 @@ public partial class App : Application
                 await dialog.ShowUpdateAsync(update);
 
                 if (dialog.SkipThisVersion)
-                    SetSkippedVersion(update.Version);
+                    UpdateService.SetSkippedVersion(update.Version);
             });
         }
         catch (Exception ex)
         {
             System.Diagnostics.Debug.WriteLine($"[Update] Silent check failed: {ex.Message}");
         }
-    }
-
-    private static string? GetSkippedVersion()
-    {
-        try
-        {
-            var settings = Windows.Storage.ApplicationData.Current.LocalSettings;
-            return settings.Values["SkippedUpdateVersion"] as string;
-        }
-        catch { return null; }
-    }
-
-    private static void SetSkippedVersion(string version)
-    {
-        try
-        {
-            var settings = Windows.Storage.ApplicationData.Current.LocalSettings;
-            settings.Values["SkippedUpdateVersion"] = version;
-        }
-        catch { }
     }
 
     private static Exception? _pendingException;

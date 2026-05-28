@@ -205,14 +205,27 @@ public sealed partial class SettingsPage : Page
 
             if (update is not null)
             {
-                UpdateStatusText.Text = $"发现新版本 v{update.Version}";
-                var dialog = new UpdateDialog();
-                await dialog.ShowUpdateAsync(update);
-
-                if (dialog.SkipThisVersion)
-                    UpdateStatusText.Text = $"已跳过 v{update.Version}";
+                var skipped = UpdateService.GetSkippedVersion();
+                if (skipped == update.Version)
+                {
+                    UpdateStatusText.Text = $"已跳过 v{update.Version}（点击重新检查）";
+                }
                 else
-                    UpdateStatusText.Text = "点击检查是否有新版本";
+                {
+                    UpdateStatusText.Text = $"发现新版本 v{update.Version}";
+                    var dialog = new UpdateDialog();
+                    await dialog.ShowUpdateAsync(update);
+
+                    if (dialog.SkipThisVersion)
+                    {
+                        UpdateService.SetSkippedVersion(update.Version);
+                        UpdateStatusText.Text = $"已跳过 v{update.Version}";
+                    }
+                    else
+                    {
+                        UpdateStatusText.Text = "点击检查是否有新版本";
+                    }
+                }
             }
             else
             {

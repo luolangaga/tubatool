@@ -74,7 +74,6 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
@@ -82,7 +81,7 @@
             x:Name="BackgroundImg"
             Stretch="UniformToFill"
             Opacity="0.15"
-            Grid.RowSpan="3"
+            Grid.RowSpan="2"
             HorizontalAlignment="Center"
             VerticalAlignment="Center" />
 
@@ -93,10 +92,18 @@
             </Grid.ColumnDefinitions>
 
             <StackPanel Spacing="4">
-                <TextBlock
-                    x:Name="CategoryTitle"
-                    FontSize="30"
-                    FontWeight="SemiBold" />
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <TextBlock
+                        x:Name="CategoryTitle"
+                        FontSize="30"
+                        FontWeight="SemiBold" />
+                    <TextBlock
+                        x:Name="ToolCountText"
+                        VerticalAlignment="Bottom"
+                        Margin="0,0,0,4"
+                        FontSize="14"
+                        Opacity="0.6" />
+                </StackPanel>
                 <TextBlock
                     x:Name="CategorySubtitle"
                     Opacity="0.72" />
@@ -111,54 +118,9 @@
                 TextChanged="SearchBox_TextChanged" />
         </Grid>
 
-        <Border
-            Grid.Row="1"
-            Padding="18"
-            Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
-            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-            BorderThickness="1"
-            CornerRadius="8">
-            <Grid ColumnSpacing="18">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
-
-                <Border
-                    Width="44"
-                    Height="44"
-                    Background="{ThemeResource AccentFillColorDefaultBrush}"
-                    CornerRadius="8">
-                    <FontIcon
-                        FontSize="22"
-                        Foreground="{ThemeResource TextOnAccentFillColorPrimaryBrush}"
-                        Glyph="&#xE8B7;" />
-                </Border>
-
-                <StackPanel Grid.Column="1" Spacing="2">
-                    <TextBlock
-                        FontSize="16"
-                        FontWeight="SemiBold"
-                        Text="本地工具启动器" />
-                    <TextBlock
-                        x:Name="ToolsRootText"
-                        Opacity="0.68"
-                        TextTrimming="CharacterEllipsis" />
-                </StackPanel>
-
-                <TextBlock
-                    x:Name="ToolCountText"
-                    Grid.Column="2"
-                    VerticalAlignment="Center"
-                    FontSize="20"
-                    FontWeight="SemiBold" />
-            </Grid>
-        </Border>
-
         <ScrollViewer
             x:Name="TagBarScrollViewer"
-            Grid.Row="2"
+            Grid.Row="1"
             HorizontalScrollBarVisibility="Hidden"
             HorizontalScrollMode="Enabled"
             VerticalScrollBarVisibility="Disabled"
@@ -167,16 +129,14 @@
             <StackPanel x:Name="TagBarPanel" Orientation="Horizontal" Spacing="6" />
         </ScrollViewer>
 
-        <Grid Grid.Row="3">
-            <ScrollViewer
-                x:Name="ToolsScrollViewer"
-                ViewChanged="ScrollViewer_ViewChanged">
-                <GridView
-                    x:Name="ToolsGrid"
-                    IsItemClickEnabled="True"
-                    ItemClick="ToolsGrid_ItemClick"
-                    ItemContainerStyle="{StaticResource ToolCardStyle}"
-                    SelectionMode="None">
+        <Grid Grid.Row="2">
+            <GridView
+                x:Name="ToolsGrid"
+                IsItemClickEnabled="True"
+                ItemClick="ToolsGrid_ItemClick"
+                ItemContainerStyle="{StaticResource ToolCardStyle}"
+                SelectionMode="None"
+                Visibility="Collapsed">
                     <GridView.ItemTemplate>
                         <DataTemplate>
                             <Border
@@ -252,28 +212,13 @@
                                         TextTrimming="CharacterEllipsis"
                                         TextWrapping="Wrap" />
 
-                                    <ItemsControl
+                                    <TextBlock
                                         Grid.Row="2"
-                                        Margin="-2,0,0,0"
-                                        ItemsSource="{Binding Tags}">
-                                        <ItemsControl.ItemsPanel>
-                                            <ItemsPanelTemplate>
-                                                <StackPanel Orientation="Horizontal" Spacing="4" />
-                                            </ItemsPanelTemplate>
-                                        </ItemsControl.ItemsPanel>
-                                        <ItemsControl.ItemTemplate>
-                                            <DataTemplate>
-                                                <Border
-                                                    Padding="6,2"
-                                                    Background="{ThemeResource SubtleFillColorSecondaryBrush}"
-                                                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-                                                    BorderThickness="1"
-                                                    CornerRadius="4">
-                                                    <TextBlock FontSize="10" Opacity="0.68" Text="{Binding}" />
-                                                </Border>
-                                            </DataTemplate>
-                                        </ItemsControl.ItemTemplate>
-                                    </ItemsControl>
+                                        FontSize="10"
+                                        Opacity="0.68"
+                                        Text="{Binding TagsText}"
+                                        TextTrimming="CharacterEllipsis"
+                                        Visibility="{Binding TagsText, Converter={StaticResource NullToCollapse}}" />
 
                                     <Grid Grid.Row="3" ColumnSpacing="8">
                                         <Grid.ColumnDefinitions>
@@ -340,15 +285,14 @@
                         </DataTemplate>
                     </GridView.ItemTemplate>
                 </GridView>
-            </ScrollViewer>
 
-            <ScrollViewer x:Name="CompactScrollViewer" Visibility="Collapsed">
-                <GridView
-                    x:Name="CompactGrid"
-                    IsItemClickEnabled="True"
-                    ItemClick="CompactGrid_ItemClick"
-                    ItemContainerStyle="{StaticResource CompactCardStyle}"
-                    SelectionMode="None">
+            <GridView
+                x:Name="CompactGrid"
+                IsItemClickEnabled="True"
+                ItemClick="CompactGrid_ItemClick"
+                ItemContainerStyle="{StaticResource CompactCardStyle}"
+                SelectionMode="None"
+                Visibility="Collapsed">
                     <GridView.Resources>
                         <MenuFlyout x:Key="CompactItemFlyout">
                             <MenuFlyoutItem Text="发送到桌面快捷方式" Click="CompactMenu_SendToDesktop" Icon="Link" />
@@ -401,7 +345,6 @@
                         </DataTemplate>
                     </GridView.ItemTemplate>
                 </GridView>
-            </ScrollViewer>
 
             <StackPanel
                 x:Name="EmptyState"

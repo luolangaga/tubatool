@@ -5,18 +5,43 @@ namespace TubaWinUi3.Services;
 
 public static class HardwareInfoService
 {
-    public static Task<IReadOnlyList<HardwareInfoSection>> LoadAsync()
+    private static IReadOnlyList<HardwareInfoSection>? _cache;
+    private static DateTime _cacheTime;
+    private static readonly TimeSpan CacheDuration = TimeSpan.FromMinutes(5);
+    private static readonly object _lock = new();
+
+    public static Task<IReadOnlyList<HardwareInfoSection>> LoadAsync(bool forceRefresh = false)
     {
         return Task.Run<IReadOnlyList<HardwareInfoSection>>(() =>
         {
+            lock (_lock)
+            {
+                if (!forceRefresh && _cache != null && DateTime.UtcNow - _cacheTime < CacheDuration)
+                    return _cache;
+            }
+
             var sections = CreateEmptySections();
 
             FillSummary(sections[0]);
             FillSystem(sections[1]);
             FillDetails(sections[2]);
 
+            lock (_lock)
+            {
+                _cache = sections;
+                _cacheTime = DateTime.UtcNow;
+            }
+
             return sections;
         });
+    }
+
+    public static void InvalidateCache()
+    {
+        lock (_lock)
+        {
+            _cache = null;
+        }
     }
 
     private static List<HardwareInfoSection> CreateEmptySections()

@@ -4,6 +4,7 @@ using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media.Animation;
 using TubaWinUi3.Models;
 using TubaWinUi3.Services;
+using Windows.ApplicationModel.DataTransfer;
 
 namespace TubaWinUi3.Pages;
 
@@ -43,7 +44,7 @@ public sealed partial class HardwarePage : Page
 
     private void RefreshButton_Click(object sender, RoutedEventArgs e)
     {
-        _ = LoadHardwareInfoAsync();
+        _ = LoadHardwareInfoAsync(forceRefresh: true);
     }
 
     private void Card_PointerEntered(object sender, PointerRoutedEventArgs e)
@@ -76,7 +77,7 @@ public sealed partial class HardwarePage : Page
         sb.Begin();
     }
 
-    private async Task LoadHardwareInfoAsync()
+    private async Task LoadHardwareInfoAsync(bool forceRefresh = false)
     {
         if (_dataLoaded)
         {
@@ -88,7 +89,7 @@ public sealed partial class HardwarePage : Page
 
         try
         {
-            var sections = await HardwareInfoService.LoadAsync();
+            var sections = await HardwareInfoService.LoadAsync(forceRefresh);
             ApplySections(sections);
             StatusBar.IsOpen = false;
         }
@@ -129,6 +130,37 @@ public sealed partial class HardwarePage : Page
     {
         LoadingRing.IsActive = isLoading;
         LoadingRing.Visibility = isLoading ? Visibility.Visible : Visibility.Collapsed;
+    }
+
+    private void Card1_Tapped(object sender, TappedRoutedEventArgs e) => CopyToClipboard(ModelText.Text);
+    private void Card2_Tapped(object sender, TappedRoutedEventArgs e) => CopyToClipboard(SystemText.Text);
+    private void Card3_Tapped(object sender, TappedRoutedEventArgs e) => CopyToClipboard(UptimeText.Text);
+
+    private void DetailItem_PointerPressed(object sender, PointerRoutedEventArgs e)
+    {
+    }
+
+    private void DetailItem_Tapped(object sender, TappedRoutedEventArgs e)
+    {
+        if (sender is not Border border) return;
+        if (border.DataContext is not HardwareInfoItem item) return;
+        CopyToClipboard(item.Value);
+    }
+
+    private void CopyToClipboard(string text)
+    {
+        var dp = new DataPackage();
+        dp.SetText(text);
+        Clipboard.SetContent(dp);
+        ShowCopyToast(text);
+    }
+
+    private void ShowCopyToast(string text)
+    {
+        StatusBar.Title = "已复制";
+        StatusBar.Message = text.Length > 80 ? text[..80] + "…" : text;
+        StatusBar.Severity = InfoBarSeverity.Success;
+        StatusBar.IsOpen = true;
     }
 
     private void DetailsRepeater_ElementPrepared(ItemsRepeater sender, ItemsRepeaterElementPreparedEventArgs args)

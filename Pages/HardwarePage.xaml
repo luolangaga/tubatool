@@ -256,7 +256,7 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
 
-                    <Border x:Name="Card1" Style="{StaticResource MetricCardStyle}" PointerEntered="Card_PointerEntered" PointerExited="Card_PointerExited">
+                    <Border x:Name="Card1" Style="{StaticResource MetricCardStyle}" PointerEntered="Card_PointerEntered" PointerExited="Card_PointerExited" Tapped="Card1_Tapped" IsTapEnabled="True" ToolTipService.ToolTip="点击复制">
                         <Grid ColumnSpacing="14">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="48" />
@@ -280,7 +280,7 @@
                         </Grid>
                     </Border>
 
-                    <Border x:Name="Card2" Grid.Column="1" Style="{StaticResource MetricCardStyle}" PointerEntered="Card_PointerEntered" PointerExited="Card_PointerExited">
+                    <Border x:Name="Card2" Grid.Column="1" Style="{StaticResource MetricCardStyle}" PointerEntered="Card_PointerEntered" PointerExited="Card_PointerExited" Tapped="Card2_Tapped" IsTapEnabled="True" ToolTipService.ToolTip="点击复制">
                         <Grid ColumnSpacing="14">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="48" />
@@ -304,7 +304,7 @@
                         </Grid>
                     </Border>
 
-                    <Border x:Name="Card3" Grid.Column="2" Style="{StaticResource MetricCardStyle}" PointerEntered="Card_PointerEntered" PointerExited="Card_PointerExited">
+                    <Border x:Name="Card3" Grid.Column="2" Style="{StaticResource MetricCardStyle}" PointerEntered="Card_PointerEntered" PointerExited="Card_PointerExited" Tapped="Card3_Tapped" IsTapEnabled="True" ToolTipService.ToolTip="点击复制">
                         <Grid ColumnSpacing="14">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="48" />
@@ -350,7 +350,11 @@
                                     Padding="16,10"
                                     CornerRadius="6"
                                     Margin="0,0,0,4"
-                                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}">
+                                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                                    PointerPressed="DetailItem_PointerPressed"
+                                    IsTapEnabled="True"
+                                    Tapped="DetailItem_Tapped"
+                                    ToolTipService.ToolTip="点击复制">
                                     <Grid MinHeight="40" Padding="4,2" ColumnSpacing="16">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="110" />

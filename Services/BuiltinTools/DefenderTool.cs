@@ -19,7 +19,7 @@ public sealed class DefenderTool : IBuiltinTool
         {
             if (context.ShowDialog is not null)
             {
-                context.ShowDialog("未找到工具", "未找到 dControl.exe，请确认 remotedefender 文件夹完整。");
+                context.ShowDialog("未找到工具", "未找到 dControl.exe，可能被杀毒软件删除。请在杀毒软件中将安装目录加入白名单后重新安装，或暂时关闭杀毒软件再试。");
             }
             return;
         }

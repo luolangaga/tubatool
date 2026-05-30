@@ -3,6 +3,7 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Navigation;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Diagnostics;
 using TubaWinUi3.Models;
 using TubaWinUi3.Pages;
@@ -12,14 +13,10 @@ namespace TubaWinUi3.Pages;
 
 public sealed partial class HomePage : Page
 {
-    private readonly ObservableCollection<ToolItem> _tools = [];
+    private readonly BulkObservableCollection<ToolItem> _tools = new();
     private string? _category;
     private string? _selectedTag;
-    private int _loadedCount;
-    private const int PageSize = 40;
-    private bool _isLoadingMore;
-    private bool _allLoaded;
-    private CancellationTokenSource? _iconLoadCts;
+    private CancellationTokenSource? _loadCts;
     private bool _compactMode;
 
     public HomePage()
@@ -27,7 +24,7 @@ public sealed partial class HomePage : Page
         InitializeComponent();
         ToolsGrid.ItemsSource = _tools;
         CompactGrid.ItemsSource = _tools;
-        ToolsRootText.Text = ToolCatalog.ToolsRoot;
+
         _compactMode = CompactModeService.IsCompactModeEnabled();
         ApplyCompactMode();
         CompactModeService.CompactModeChanged += OnCompactModeChanged;
@@ -43,13 +40,13 @@ public sealed partial class HomePage : Page
     {
         if (_compactMode)
         {
-            ToolsScrollViewer.Visibility = Visibility.Collapsed;
-            CompactScrollViewer.Visibility = _tools.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
+            ToolsGrid.Visibility = Visibility.Collapsed;
+            CompactGrid.Visibility = _tools.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
         }
         else
         {
-            ToolsScrollViewer.Visibility = _tools.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
-            CompactScrollViewer.Visibility = Visibility.Collapsed;
+            ToolsGrid.Visibility = _tools.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
+            CompactGrid.Visibility = Visibility.Collapsed;
         }
     }
 
@@ -59,15 +56,11 @@ public sealed partial class HomePage : Page
         {
             ToolsGrid.Visibility = Visibility.Collapsed;
             CompactGrid.Visibility = hasTools ? Visibility.Visible : Visibility.Collapsed;
-            ToolsScrollViewer.Visibility = Visibility.Collapsed;
-            CompactScrollViewer.Visibility = hasTools ? Visibility.Visible : Visibility.Collapsed;
         }
         else
         {
             ToolsGrid.Visibility = hasTools ? Visibility.Visible : Visibility.Collapsed;
             CompactGrid.Visibility = Visibility.Collapsed;
-            ToolsScrollViewer.Visibility = hasTools ? Visibility.Visible : Visibility.Collapsed;
-            CompactScrollViewer.Visibility = Visibility.Collapsed;
         }
     }
 
@@ -77,8 +70,9 @@ public sealed partial class HomePage : Page
         _category = e.Parameter as string;
         SearchBox.Text = string.Empty;
         _selectedTag = null;
-        ResetAndLoad();
         ApplyBackground();
+        UpdateTitle();
+        _ = LoadToolsAsync();
         if (_category is null)
             _ = PopulateTagBarAsync();
         else
@@ -141,8 +135,69 @@ public sealed partial class HomePage : Page
                 if (child is RadioButton other && other != rb)
                     other.IsChecked = false;
             }
-            ResetAndLoad();
+            UpdateTitle();
+            _ = LoadToolsAsync();
         }
+    }
+
+    private void UpdateTitle()
+    {
+        var query = SearchBox.Text.Trim();
+        var title = _category?.Replace("工具", "") ?? "全部";
+        if (query.Length > 0)
+            title = $"搜索：{query}";
+        else if (_selectedTag is not null)
+            title = $"标签：{_selectedTag}";
+        CategoryTitle.Text = title;
+        CategorySubtitle.Text = query.Length > 0
+            ? "显示所有分类中匹配的工具。"
+            : _selectedTag is not null
+                ? $"显示带有「{_selectedTag}」标签的工具。"
+                : _category is null
+                    ? "从左侧选择分类，点击卡片看详情，点击打开运行工具。"
+                    : $"正在浏览\u201C{_category.Replace("工具", "")}\u201D分类。";
+    }
+
+    private async Task LoadToolsAsync()
+    {
+        _loadCts?.Cancel();
+        var cts = new CancellationTokenSource();
+        _loadCts = cts;
+
+        _tools.Clear();
+
+        var query = SearchBox.Text.Trim();
+
+        try
+        {
+            IReadOnlyList<ToolItem> tools = await Task.Run(() =>
+            {
+                if (query.Length > 0 || _selectedTag is not null)
+                    return ToolCatalog.Search(query, _selectedTag);
+                if (_category is not null)
+                    return ToolCatalog.GetTools(_category);
+                return ToolCatalog.GetAllToolsLazy(0, int.MaxValue);
+            }, cts.Token);
+
+            cts.Token.ThrowIfCancellationRequested();
+
+            _tools.AddRange(tools);
+
+            ToolCountText.Text = _tools.Count > 0 ? $"{_tools.Count} 个工具" : "";
+            ToolCountText.Visibility = _tools.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
+            EmptyState.Visibility = _tools.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
+            UpdateGridVisibility(_tools.Count > 0);
+            EmptyStateText.Text = query.Length > 0
+                ? $"未找到与\u201C{query}\u201D相关的工具。"
+                : _selectedTag is not null
+                    ? $"未找到带有「{_selectedTag}」标签的工具。"
+                    : _category is not null
+                        ? "此分类下没有可用工具。"
+                        : "没有找到任何工具，请检查 Tools 目录。";
+
+            StartIconLoading(tools);
+        }
+        catch (OperationCanceledException) { }
     }
 
     private void ApplyBackground()
@@ -165,17 +220,8 @@ public sealed partial class HomePage : Page
     {
         if (args.Reason is AutoSuggestionBoxTextChangeReason.UserInput or AutoSuggestionBoxTextChangeReason.ProgrammaticChange)
         {
-            ResetAndLoad();
-        }
-    }
-
-    private void ClearTagFilter()
-    {
-        _selectedTag = null;
-        foreach (var child in TagBarPanel.Children)
-        {
-            if (child is RadioButton rb)
-                rb.IsChecked = rb.Tag is null;
+            UpdateTitle();
+            _ = LoadToolsAsync();
         }
     }
 
@@ -365,123 +411,11 @@ public sealed partial class HomePage : Page
         }
     }
 
-    private void ScrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
-    {
-        var sv = (ScrollViewer)sender;
-        if (sv.VerticalOffset >= sv.ScrollableHeight - 200 && !_isLoadingMore && !_allLoaded && SearchBox.Text.Trim().Length == 0 && _selectedTag is null)
-        {
-            LoadMore();
-        }
-    }
-
-    private void ResetAndLoad()
-    {
-        _tools.Clear();
-        _loadedCount = 0;
-        _allLoaded = false;
-        _isLoadingMore = false;
-        _iconLoadCts?.Cancel();
-        LoadMore();
-
-        var query = SearchBox.Text.Trim();
-        var title = _category?.Replace("工具", "") ?? "全部";
-        if (query.Length > 0)
-            title = $"搜索：{query}";
-        else if (_selectedTag is not null)
-            title = $"标签：{_selectedTag}";
-        CategoryTitle.Text = title;
-        CategorySubtitle.Text = query.Length > 0
-            ? "显示所有分类中匹配的工具。"
-            : _selectedTag is not null
-                ? $"显示带有「{_selectedTag}」标签的工具。"
-                : _category is null
-                    ? "从左侧选择分类，点击卡片看详情，点击打开运行工具。"
-                    : $"正在浏览\u201C{_category.Replace("工具", "")}\u201D分类。";
-    }
-
-    private void LoadMore()
-    {
-        _isLoadingMore = true;
-        var query = SearchBox.Text.Trim();
-
-        if (query.Length > 0 || _selectedTag is not null)
-        {
-            var results = ToolCatalog.Search(query, _selectedTag);
-            foreach (var tool in results)
-                _tools.Add(tool);
-            _allLoaded = true;
-
-            ToolCountText.Text = _tools.Count > 0 ? $"{_tools.Count} 个工具" : "无结果";
-            EmptyState.Visibility = _tools.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
-            UpdateGridVisibility(_tools.Count > 0);
-            EmptyStateText.Text = query.Length > 0
-                ? $"未找到与\u201C{query}\u201D相关的工具。"
-                : $"未找到带有「{_selectedTag}」标签的工具。";
-            _isLoadingMore = false;
-            StartIconLoading(results);
-            return;
-        }
-
-        if (_category is not null)
-        {
-            if (_loadedCount == 0)
-            {
-                var tools = ToolCatalog.GetTools(_category);
-                foreach (var tool in tools)
-                    _tools.Add(tool);
-                _allLoaded = true;
-                StartIconLoading(tools);
-            }
-            ToolCountText.Text = $"{_tools.Count} 个工具";
-            EmptyState.Visibility = _tools.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
-            UpdateGridVisibility(_tools.Count > 0);
-            EmptyStateText.Text = "此分类下没有可用工具。";
-            _isLoadingMore = false;
-            return;
-        }
-
-        if (_compactMode)
-        {
-            var allTools = ToolCatalog.GetAllToolsLazy(0, int.MaxValue);
-            foreach (var tool in allTools)
-                _tools.Add(tool);
-            _allLoaded = true;
-
-            ToolCountText.Text = $"{_tools.Count} 个工具";
-            EmptyState.Visibility = _tools.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
-            UpdateGridVisibility(_tools.Count > 0);
-            EmptyStateText.Text = "没有找到任何工具，请检查 Tools 目录。";
-
-            _isLoadingMore = false;
-            StartIconLoading(allTools);
-            return;
-        }
-
-        var batch = ToolCatalog.GetAllToolsLazy(_loadedCount, PageSize);
-        foreach (var tool in batch)
-            _tools.Add(tool);
-
-        _loadedCount += batch.Count;
-        _allLoaded = batch.Count < PageSize;
-
-        ToolCountText.Text = _allLoaded
-            ? $"{_tools.Count} 个工具"
-            : $"{_tools.Count} / {ToolCatalog.GetAllToolsCount()} 个工具";
-
-        EmptyState.Visibility = _tools.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
-        UpdateGridVisibility(_tools.Count > 0);
-        EmptyStateText.Text = "没有找到任何工具，请检查 Tools 目录。";
-
-        _isLoadingMore = false;
-        StartIconLoading(batch);
-    }
-
     private void StartIconLoading(IReadOnlyList<ToolItem> tools)
     {
         if (tools.Count == 0) return;
-        _iconLoadCts?.Cancel();
-        _iconLoadCts = new CancellationTokenSource();
-        var ct = _iconLoadCts.Token;
+        _loadCts?.Cancel();
+        var ct = _loadCts?.Token ?? CancellationToken.None;
         _ = ToolIconService.LoadIconsAsync(tools, DispatcherQueue);
         _ = CheckWingetInstallStatusAsync(tools, ct);
     }

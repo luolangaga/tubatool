@@ -47,6 +47,8 @@ public sealed class ToolItem : INotifyPropertyChanged
 
     public IReadOnlyList<string> Tags { get; init; } = [];
 
+    public string TagsText => Tags.Count > 0 ? string.Join("  ", Tags) : "";
+
     private bool _isFavorite;
     public bool IsFavorite
     {

@@ -33,6 +33,8 @@ jobs:
         include:
           - arch: x64
             rid: win-x64
+          - arch: x86
+            rid: win-x86
           - arch: arm64
             rid: win-arm64
     runs-on: windows-latest
@@ -48,7 +50,7 @@ jobs:
           $csproj = $csproj -replace '<Version>[^<]*</Version>', "<Version>$ver</Version>"
           Set-Content -LiteralPath 'TubaWinUi3.csproj' -Value $csproj -NoNewline
 
-          foreach ($iss in @('installer.iss', 'installer-x64.iss', 'installer-arm64.iss')) {
+          foreach ($iss in @('installer.iss', 'installer-x64.iss', 'installer-x86.iss', 'installer-arm64.iss')) {
             if (Test-Path -LiteralPath $iss) {
               $content = Get-Content -LiteralPath $iss -Raw
               $content = $content -replace '#define MyAppVersion "[^"]*"', "#define MyAppVersion ""$ver"""
@@ -108,6 +110,19 @@ jobs:
           if (Test-Path -LiteralPath $priFile) {
             Copy-Item -LiteralPath $priFile -Destination publish_${{ matrix.arch }}_installer -Force
             Write-Host "Restored TubaWinUi3.pri for installer"
+          }
+
+      - name: Verify remotedefender in publish output
+        shell: pwsh
+        run: |
+          foreach ($root in @("publish_${{ matrix.arch }}", "publish_${{ matrix.arch }}_installer")) {
+            $rdPath = Join-Path $root "remotedefender"
+            if (Test-Path -LiteralPath $rdPath) {
+              Write-Host "OK: $rdPath exists"
+              Get-ChildItem -LiteralPath $rdPath -Recurse | ForEach-Object { Write-Host "  $($_.FullName)" }
+            } else {
+              Write-Host "::warning::remotedefender folder NOT found in $root"
+            }
           }
 
       - name: Clean up publish directories
@@ -240,6 +255,8 @@ jobs:
             | 文件 | 说明 |
             |------|------|
             | `TubaWinUi3_Setup_${{ inputs.version }}_x64.exe` | x64 安装包 |
+            | `TubaWinUi3_Setup_${{ inputs.version }}_x86.exe` | x86 安装包 |
             | `TubaWinUi3_Setup_${{ inputs.version }}_arm64.exe` | ARM64 安装包 |
             | `TubaWinUi3_Portable_${{ inputs.version }}_x64.zip` | x64 便携版 |
+            | `TubaWinUi3_Portable_${{ inputs.version }}_x86.zip` | x86 便携版 |
             | `TubaWinUi3_Portable_${{ inputs.version }}_arm64.zip` | ARM64 便携版 |

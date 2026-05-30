@@ -121,31 +121,7 @@ public sealed partial class LiteMonitorPage : Page
         StartTimer(TimeSpan.FromSeconds(1));
     }
 
-    public LiteMonitorPage(bool driverInstalled)
-    {
-        InitializeComponent();
-        DriverWarning.IsOpen = !LiteMonitorService.IsDriverReady();
-        InitCards();
-        StartTimer(TimeSpan.FromSeconds(1));
-    }
 
-    private async void InstallDriverBtn_Click(object sender, RoutedEventArgs e)
-    {
-        InstallDriverBtn.IsEnabled = false;
-        InstallDriverBtn.Content = "安装中...";
-        var ok = await _svc.EnsureDriverAsync(XamlRoot);
-        if (ok)
-        {
-            DriverWarning.IsOpen = false;
-            DriverWarning.IsClosable = true;
-            LiteMonitorService.ReinitLhm();
-        }
-        else
-        {
-            InstallDriverBtn.Content = "安装驱动";
-            InstallDriverBtn.IsEnabled = true;
-        }
-    }
 
     private void InitCards()
     {

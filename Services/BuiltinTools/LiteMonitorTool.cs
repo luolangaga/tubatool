@@ -30,7 +30,7 @@ public sealed class LiteMonitorTool : IBuiltinTool
         };
         dialog.Resources["ContentDialogMaxWidth"] = 960;
 
-        var page = new LiteMonitorPage(true);
+        var page = new LiteMonitorPage();
         dialog.Content = page;
 
         await dialog.ShowAsync();

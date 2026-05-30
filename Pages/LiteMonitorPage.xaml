@@ -9,11 +9,6 @@
 
     <ScrollViewer Padding="20,8,20,16">
         <StackPanel Spacing="12">
-            <InfoBar x:Name="DriverWarning" IsOpen="True" IsClosable="False" Severity="Warning" Title="需要安装驱动" Message="CPU 温度/频率/功耗等数据需要 PawnIO 驱动支持。">
-                <InfoBar.ActionButton>
-                    <Button x:Name="InstallDriverBtn" Content="安装驱动" Click="InstallDriverBtn_Click" />
-                </InfoBar.ActionButton>
-            </InfoBar>
             <Grid ColumnSpacing="10">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
